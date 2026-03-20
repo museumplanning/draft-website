@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Museum Planning LLC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--ink:#18160f;--paper:#efe9df;--warm:#c8b99a;--mid:#9a9088;--accent:#a8864e}
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden}
+
+    /* ── Nav ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+    nav.scrolled{background:rgba(239,233,223,0.95);backdrop-filter:blur(12px);border-color:rgba(24,22,15,.07)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:40px;list-style:none}
+    .nav-links a{color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.4;transition:opacity .3s}
+    .nav-links a:hover{opacity:.9}
+    .nav-links a.active{opacity:1;color:var(--accent)}
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .nav-hamburger span{display:block;width:24px;height:1px;background:var(--ink);transition:transform .3s,opacity .3s}
+    .nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .nav-hamburger.open span:nth-child(2){opacity:0}
+    .nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile-menu{display:none;position:fixed;inset:0;background:rgba(239,233,223,.97);z-index:599;flex-direction:column;align-items:center;justify-content:center;gap:40px}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{color:var(--ink);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:.05em;transition:color .3s}
+    .mobile-menu a:hover{color:var(--accent)}
+
+    /* ── Hero ── */
+    #hero{height:50vh;display:flex;align-items:flex-end;background:var(--paper);padding:0 52px 72px}
+    .hero-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--mid);margin-bottom:18px}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7.5vw,108px);font-weight:300;line-height:.93;letter-spacing:-.01em;color:var(--ink)}
+    .hero-h1 em{font-style:italic;color:var(--accent)}
+
+    /* ── Contact body ── */
+    #contact-body{padding:80px 52px}
+
+    .contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:80px;align-items:start;border-top:1px solid rgba(24,22,15,.08);padding-top:56px}
+
+    /* Left col */
+    .contact-col-label{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:24px}
+
+    .rate-list{list-style:none;border-top:1px solid rgba(24,22,15,.08)}
+    .rate-list li{padding:16px 0;border-bottom:1px solid rgba(24,22,15,.08);display:flex;flex-direction:column;gap:4px}
+    .rate-name{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+    .rate-val{font-size:15px;font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--mid)}
+
+    .phone-block{margin-top:48px}
+    .phone-number{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--ink);letter-spacing:.03em}
+    .phone-note{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-top:6px}
+
+    /* Right col — CF7 form */
+    .wpcf7 form{display:flex;flex-direction:column;gap:28px}
+    .wpcf7 p{margin:0;display:flex;flex-direction:column;gap:8px}
+    .wpcf7 label{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent)}
+    .wpcf7 input[type="text"],
+    .wpcf7 input[type="email"],
+    .wpcf7 textarea{background:transparent;border:none;border-bottom:1px solid rgba(24,22,15,.15);padding:8px 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;font-weight:300;color:var(--ink);transition:border-color .25s;outline:none;width:100%;border-radius:0;box-shadow:none}
+    .wpcf7 input[type="text"]::placeholder,
+    .wpcf7 input[type="email"]::placeholder,
+    .wpcf7 textarea::placeholder{color:rgba(154,144,136,.4)}
+    .wpcf7 input[type="text"]:focus,
+    .wpcf7 input[type="email"]:focus,
+    .wpcf7 textarea:focus{border-color:var(--accent)}
+    .wpcf7 textarea{resize:vertical;min-height:120px;line-height:1.7}
+    .wpcf7 input[type="submit"]{align-self:flex-start;margin-top:8px;background:var(--ink);color:var(--paper);border:none;padding:14px 40px;font-family:'Jost',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .25s;border-radius:0}
+    .wpcf7 input[type="submit"]:hover{background:var(--accent)}
+    .wpcf7-not-valid-tip{font-size:9px;letter-spacing:.1em;color:#c0392b}
+    .wpcf7-response-output{font-size:10px;letter-spacing:.1em;border:1px solid rgba(24,22,15,.1) !important;padding:10px 14px !important;margin:0 !important;color:var(--mid)}
+
+    /* ── CTA band ── */
+    #cta-band{background:var(--ink);color:var(--paper);padding:120px 52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:80px}
+    .cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,72px);font-weight:300;line-height:.98}
+    .cta-h em{font-style:italic;color:var(--warm)}
+    .cta-body{margin-top:22px;font-size:13px;line-height:1.9;color:rgba(239,233,223,.45);max-width:420px}
+    .cta-actions{display:flex;flex-direction:column;gap:14px}
+    .btn-p{display:inline-block;padding:16px 40px;background:var(--warm);color:var(--ink);font-size:10px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;font-weight:400;white-space:nowrap;transition:background .3s}
+    .btn-p:hover{background:var(--paper)}
+    .btn-s{display:inline-block;padding:16px 40px;border:1px solid rgba(239,233,223,.25);color:var(--paper);font-size:10px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:border-color .3s}
+    .btn-s:hover{border-color:rgba(239,233,223,.7)}
+
+    /* ── Footer ── */
+    footer{background:var(--ink);padding:28px 52px;border-top:1px solid rgba(239,233,223,.07);display:flex;justify-content:space-between;align-items:center}
+    footer span{font-size:10px;color:var(--mid);letter-spacing:.1em}
+    .ft-links{display:flex;gap:32px}
+    .ft-links a{font-size:10px;color:var(--mid);text-decoration:none;letter-spacing:.1em;transition:color .3s}
+    .ft-links a:hover{color:var(--warm)}
+
+    @media(max-width:900px){
+      nav{padding:22px 28px}
+      .nav-links{display:none}
+      .nav-hamburger{display:flex}
+      #hero{padding:0 24px 60px}
+      #contact-body{padding:60px 24px}
+      .contact-grid{grid-template-columns:1fr;gap:48px}
+      #cta-band{grid-template-columns:1fr;gap:40px;padding:80px 28px}
+      footer{flex-direction:column;gap:16px;text-align:center;padding:24px 28px}
+      .ft-links{flex-wrap:wrap;justify-content:center}
+    }
+  </style>
+  <link rel="canonical" href="https://museumplanning.com/contact/">
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="/" class="nav-logo">Museum Planning LLC</a>
+    <ul class="nav-links">
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/services/">Services</a></li>
+      <li><a href="/mvi/">MVI</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/thinking/">Thinking</a></li>
+      <li><a href="/books/">Books</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/" class="active">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="/work/" class="mobile-link">Projects</a>
+    <a href="/services/" class="mobile-link">Services</a>
+    <a href="/mvi/" class="mobile-link">MVI</a>
+    <a href="/tools/" class="mobile-link">Tools</a>
+    <a href="/thinking/" class="mobile-link">Thinking</a>
+    <a href="/books/" class="mobile-link">Books</a>
+    <a href="/contact/" class="mobile-link" style="color:var(--accent)">Contact</a>
+  </div>
+
+  <section id="hero">
+    <div>
+      <div class="hero-kicker">Museum Planning LLC &middot; Get in Touch</div>
+      <h1 class="hero-h1">Start a<br><em>Conversation.</em></h1>
+    </div>
+  </section>
+
+  <section id="contact-body">
+    <div class="contact-grid">
+
+      <!-- Left: rates + phone -->
+      <div>
+        <div class="contact-col-label">Typical Rates</div>
+        <ul class="rate-list">
+          <li>
+            <span class="rate-name">Museum Assessment</span>
+            <span class="rate-val">$18,000 + travel <em style="font-size:.85rem">(min. retainer)</em></span>
+          </li>
+          <li>
+            <span class="rate-name">Strategic Planning</span>
+            <span class="rate-val">$45k – $75k + travel</span>
+          </li>
+          <li>
+            <span class="rate-name">Feasibility Studies</span>
+            <span class="rate-val">$40k – $70k + travel</span>
+          </li>
+          <li>
+            <span class="rate-name">Master Planning</span>
+            <span class="rate-val">$100k+ + travel</span>
+          </li>
+          <li>
+            <span class="rate-name">Exhibition Design</span>
+            <span class="rate-val">$60k – $200k + travel</span>
+          </li>
+          <li>
+            <span class="rate-name">Owners Rep / PM</span>
+            <span class="rate-val">Variable — per scope</span>
+          </li>
+        </ul>
+
+        <div class="phone-block">
+          <div class="contact-col-label" style="margin-bottom:10px">Phone</div>
+          <div class="phone-number">415-794-5252</div>
+          <div class="phone-note">USA</div>
+        </div>
+      </div>
+
+      <!-- Right: CF7 form -->
+      <div>
+        <div class="contact-col-label">Send a Message</div>
+        [contact-form-7 id="1" title="Contact form 1"]
+      </div>
+
+    </div>
+  </section>
+
+  <section id="cta-band">
+    <div>
+      <h2 class="cta-h">Ready to define<br>your <em>museum's future?</em></h2>
+      <p class="cta-body">Mark Walhimer is personally involved in every engagement. We are ready to begin within two weeks of executed agreement.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="/services/" class="btn-s">View Services</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; 2026 Museum Planning, LLC</span>
+    <div class="ft-links">
+      
+      <a href="https://museums101.com">Museums 101</a>
+      <a href="https://www.museum-experiences.com">Museum Experiences</a>
+      <a href="/contact/">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll',function(){
+      document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+    },{passive:true});
+
+    var hamburger=document.querySelector('.nav-hamburger');
+    var mobileMenu=document.getElementById('mobile-menu');
+    document.querySelectorAll('.mobile-link').forEach(function(l){l.addEventListener('click',function(){mobileMenu.classList.remove('open');hamburger.classList.remove('open');hamburger.setAttribute('aria-expanded',false);document.body.style.overflow='';});});
+    hamburger.addEventListener('click',function(){
+      var open=!mobileMenu.classList.contains('open');
+      mobileMenu.classList.toggle('open',open);
+      hamburger.classList.toggle('open',open);
+      hamburger.setAttribute('aria-expanded',open);
+      document.body.style.overflow=open?'hidden':'';
+    });
+  </script>
+</body>
+</html>

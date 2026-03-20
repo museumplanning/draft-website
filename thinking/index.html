@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thinking — Museum Planning LLC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--ink:#18160f;--paper:#efe9df;--warm:#c8b99a;--mid:#9a9088;--accent:#a8864e}
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+    nav.scrolled{background:rgba(239,233,223,0.95);backdrop-filter:blur(12px);border-color:rgba(24,22,15,.07)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:40px;list-style:none}
+    .nav-links a{color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.4;transition:opacity .3s}
+    .nav-links a:hover{opacity:.9}
+    .nav-links a.active{opacity:1;color:var(--accent)}
+
+    #hero{height:50vh;display:flex;align-items:flex-end;background:var(--paper);padding:0 52px 72px}
+    .hero-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--mid);margin-bottom:18px}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7.5vw,108px);font-weight:300;line-height:.93;letter-spacing:-.01em;color:var(--ink)}
+    .hero-h1 em{font-style:italic;color:var(--accent)}
+
+    /* ── Articles ── */
+    #articles{padding:80px 52px}
+
+    .article-row{display:grid;grid-template-columns:280px 1fr;gap:52px;align-items:start;padding:48px 0;border-top:1px solid rgba(24,22,15,.08);opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease;text-decoration:none;color:inherit}
+    .article-row.visible{opacity:1;transform:translateY(0)}
+    .article-row:hover .article-title{color:var(--accent)}
+
+    .article-img{width:100%;aspect-ratio:16/9;object-fit:cover;filter:saturate(0.7);transition:filter .4s,transform .4s}
+    .article-row:hover .article-img{filter:saturate(1);transform:scale(1.02)}
+    .article-img-wrap{overflow:hidden;background:rgba(24,22,15,.04)}
+
+    .article-meta{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+    .article-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.5vw,34px);font-weight:300;line-height:1.15;color:var(--ink);margin-bottom:16px;transition:color .3s}
+    .article-excerpt{font-size:13px;line-height:1.9;color:var(--mid);max-width:560px}
+    .article-read{display:inline-block;margin-top:20px;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid rgba(168,134,78,.3);padding-bottom:2px;transition:border-color .3s}
+    .article-row:hover .article-read{border-color:var(--accent)}
+
+    .no-img-spacer{background:rgba(24,22,15,.03);border:1px solid rgba(24,22,15,.07);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+    .no-img-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(24,22,15,.08)}
+
+    /* CTA band */
+    #cta-band{background:var(--ink);color:var(--paper);padding:120px 52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:80px}
+    .cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,72px);font-weight:300;line-height:.98}
+    .cta-h em{font-style:italic;color:var(--warm)}
+    .cta-body{margin-top:22px;font-size:13px;line-height:1.9;color:rgba(239,233,223,.45);max-width:420px}
+    .cta-actions{display:flex;flex-direction:column;gap:14px}
+    .btn-p{display:inline-block;padding:16px 40px;background:var(--warm);color:var(--ink);font-size:10px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;font-weight:400;white-space:nowrap;transition:background .3s}
+    .btn-p:hover{background:var(--paper)}
+    .btn-s{display:inline-block;padding:16px 40px;border:1px solid rgba(239,233,223,.25);color:var(--paper);font-size:10px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:border-color .3s}
+    .btn-s:hover{border-color:rgba(239,233,223,.7)}
+
+    footer{background:var(--ink);padding:28px 52px;border-top:1px solid rgba(239,233,223,.07);display:flex;justify-content:space-between;align-items:center}
+    footer span{font-size:10px;color:var(--mid);letter-spacing:.1em}
+    .ft-links{display:flex;gap:32px}
+    .ft-links a{font-size:10px;color:var(--mid);text-decoration:none;letter-spacing:.1em;transition:color .3s}
+    .ft-links a:hover{color:var(--warm)}
+
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .nav-hamburger span{display:block;width:24px;height:1px;background:var(--ink);transition:transform .3s,opacity .3s}
+    .nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .nav-hamburger.open span:nth-child(2){opacity:0}
+    .nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile-menu{display:none;position:fixed;inset:0;background:rgba(239,233,223,.97);z-index:599;flex-direction:column;align-items:center;justify-content:center;gap:40px}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{color:var(--ink);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:.05em;transition:color .3s}
+    .mobile-menu a:hover{color:var(--accent)}
+
+    @media(max-width:900px){
+      nav{padding:22px 28px}
+      .nav-links{display:none}
+      .nav-hamburger{display:flex}
+      #hero{padding:0 24px 60px}
+      #articles{padding:60px 24px}
+      .article-row{grid-template-columns:1fr;gap:24px}
+      #cta-band{grid-template-columns:1fr;gap:40px;padding:80px 28px}
+      footer{flex-direction:column;gap:16px;text-align:center;padding:24px 28px}
+      .ft-links{flex-wrap:wrap;justify-content:center}
+    }
+  </style>
+  <link rel="canonical" href="https://museumplanning.com/thinking/">
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="/" class="nav-logo">Museum Planning LLC</a>
+    <ul class="nav-links">
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/services/">Services</a></li>
+      <li><a href="/mvi/">MVI</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/thinking/" class="active">Thinking</a></li>
+      <li><a href="/books/">Books</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="/work/" class="mobile-link">Projects</a>
+    <a href="/services/" class="mobile-link">Services</a>
+    <a href="/mvi/" class="mobile-link">MVI</a>
+    <a href="/tools/" class="mobile-link">Tools</a>
+    <a href="/thinking/" class="mobile-link" style="color:var(--accent)">Thinking</a>
+    <a href="/books/" class="mobile-link">Books</a>
+    <a href="/contact/" class="mobile-link">Contact</a>
+  </div>
+
+  <section id="hero">
+    <div>
+      <div class="hero-kicker">Museum Planning LLC &middot; Thinking &amp; Writing</div>
+      <h1 class="hero-h1">Museum Planning<br><em>Articles.</em></h1>
+    </div>
+  </section>
+
+  <section id="articles">
+
+    
+    <a href="/thinking/convergence-era/" class="article-row visible" style="opacity:1;transform:none">
+      <div class="article-img-wrap">
+        <div class="no-img-spacer" style="background:var(--ink);border:1px solid rgba(168,134,78,.15)">
+          <span class="no-img-num" style="color:rgba(168,134,78,.4);font-size:64px">CE</span>
+        </div>
+      </div>
+      <div>
+        <div class="article-meta">November 2025 &middot; White Paper &middot; AI &middot; Museum Planning</div>
+        <div class="article-title">Convergence Era: Industrial Design, Artificial Intelligence, and the Transformation of Cultural Systems</div>
+        <div class="article-excerpt">Museums will no longer be defined as buildings but as distributed interpretive systems. A framework for understanding the convergence of AI, industrial design, spatial computing, and cultural institutions — written in November 2025, before this convergence became consensus.</div>
+        <span class="article-read">Read the white paper →</span>
+      </div>
+    </a>
+
+    <a href="/university-museums/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2026/01/Howard_front-1-scaled-1-1400x788.webp" alt="University Museums" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">February 21, 2026 &middot; Museum Master Planning &middot; University Museums</div>
+        <div class="article-title">From Science Collections to Campus Centerpiece: How to Build a University Museum That Inspires, Engages, and Transforms</div>
+        <div class="article-excerpt">If your university has a storage room full of fossils, a cabinet of pinned insects, or boxes of archaeological artifacts that no one outside your department ever sees — this post is for you.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/a-future-vision-for-childrens-museums/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2025/07/Whisk_51f8515c5c-1400x764.jpeg" alt="Future of Children's Museums" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">July 25, 2025 &middot; Museum Master Planning</div>
+        <div class="article-title">A Future Vision for Children's Museums</div>
+        <div class="article-excerpt">We are entering a new era — one that is unfolding faster than most institutions can adapt to. Within the next five years, many of today's familiar technologies and environments will be radically transformed or disappear entirely.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/what-i-learned-as-an-interim-museum-director/" class="article-row">
+      <div class="no-img-spacer"><div class="no-img-num">03</div></div>
+      <div>
+        <div class="article-meta">July 7, 2024 &middot; Museum Leadership</div>
+        <div class="article-title">What I Learned as an Interim Museum Director</div>
+        <div class="article-excerpt">For the past six months, I served as the Interim Museum Director at a university science museum. This experience provided valuable insights into effective museum leadership.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/mark-walhimer-resume/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2024/07/Walhimer-Mark-2819-1-1400x933.jpg" alt="Mark Walhimer Resume" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">July 7, 2024 &middot; Mark Walhimer</div>
+        <div class="article-title">Mark Walhimer Resume 2024</div>
+        <div class="article-excerpt">A current resume and photo for Mark Walhimer, Managing Partner of Museum Planning LLC.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/what-i-learned-from-visiting-thirty-museums-in-europe/" class="article-row">
+      <div class="no-img-spacer"><div class="no-img-num">05</div></div>
+      <div>
+        <div class="article-meta">November 7, 2023 &middot; Museum Master Planning</div>
+        <div class="article-title">What I Learned From Visiting Thirty Museums in Europe</div>
+        <div class="article-excerpt">Accessibility, collaboration, visitor experience, and the emotional impact of museums — key lessons from a tour of thirty European institutions.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museum-ai/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2023/07/3788888468_interactive-science-center__esrgan-v1-x2plus-edited.png" alt="Museum AI" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">July 10, 2023 &middot; Museum AI</div>
+        <div class="article-title">Museum AI</div>
+        <div class="article-excerpt">Ten reasons museums should embrace the power of AI — immersive exhibits, personalized visitor experiences, and the future of informal education.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museum-customer-service-training/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2022/07/iStock-538358778.jpeg" alt="Museum Customer Service Training" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">July 13, 2022 &middot; Museum Customer Service Training</div>
+        <div class="article-title">Museum Customer Service Training</div>
+        <div class="article-excerpt">Museum customer service and visitor experience training resources developed by Mark Walhimer and Museum Planning, LLC.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/starting-a-museum/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2022/05/JT2A3715-1400x933-1.jpg" alt="Starting a Museum" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">May 31, 2022 &middot; Museum Master Planning</div>
+        <div class="article-title">Ten Steps to Starting a Private Museum</div>
+        <div class="article-excerpt">A complete guide to starting a museum — ten steps from initial concept through opening day, by Museum Planning LLC.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/designing-museum-experiences-dme-process/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2022/03/001_Designing_Museu_Experiences_Process_v1-1400x800.jpg" alt="DME Process" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">March 17, 2022 &middot; Designing Museum Experiences</div>
+        <div class="article-title">Designing Museum Experiences (DME) Process</div>
+        <div class="article-excerpt">Templates and process documentation from the book Designing Museum Experiences by Mark Walhimer, AAM Press.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museums-and-a-metaphysical-crisis/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2022/02/giorgio-de-chirico-1-1400x788.jpg" alt="Museums and a Metaphysical Crisis" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">February 24, 2022 &middot; Museum Master Planning</div>
+        <div class="article-title">Museums and a Metaphysical Crisis</div>
+        <div class="article-excerpt">The world faces a metaphysical crisis, and museums have an essential role in providing leadership in times of uncertainty.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museums-post-covid-19-2/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2021/05/Screen-Shot-2021-05-19-at-1.01.27-PM.png" alt="Museums Post COVID-19" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">May 19, 2021 &middot; COVID-19 &middot; Future of Museums</div>
+        <div class="article-title">"How Will Coronavirus (COVID-19) Change Museums? A Few Predictions"</div>
+        <div class="article-excerpt">Predictions for how COVID-19 will permanently reshape the museum industry — visitor experience, digital strategy, and institutional resilience.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/future-of-science-centers/" class="article-row">
+      <div class="no-img-spacer"><div class="no-img-num">12</div></div>
+      <div>
+        <div class="article-meta">May 8, 2021 &middot; Future of Science Centers</div>
+        <div class="article-title">"Digital First" Future of Science Centers — A Strategic Plan</div>
+        <div class="article-excerpt">A draft strategic plan for the digital-first future of science centers, addressing programming, revenue, and visitor engagement.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museums-post-covid-19/" class="article-row">
+      <div class="no-img-spacer"><div class="no-img-num">13</div></div>
+      <div>
+        <div class="article-meta">September 9, 2020 &middot; COVID-19 &middot; Future of Museums</div>
+        <div class="article-title">Museums Post COVID-19</div>
+        <div class="article-excerpt">The post COVID-19 museum will be nimble, lean, inclusive, community oriented and visitor centered — a hybrid of digital and in-person experiences.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museum-planning-llc-process/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2020/07/2020-06-06-11.png" alt="Museum Planning LLC Process" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">July 19, 2020 &middot; Museum Master Planning</div>
+        <div class="article-title">Museum Planning LLC Process</div>
+        <div class="article-excerpt">An overview of Museum Planning LLC's project phases — from feasibility and strategic planning through exhibition design, fabrication management, and staff training.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museum-planning-llc-celebrates-first-twenty-years-in-business/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2019/01/logo-1.png" alt="Twenty Years in Business" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">January 29, 2019 &middot; Museum Planning LLC</div>
+        <div class="article-title">Museum Planning LLC is Twenty Years in Business</div>
+        <div class="article-excerpt">1999–2019: Twenty years of building museums worldwide. Thank you to all clients, collaborators, and the museum community.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museum-exterior-signage/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2018/10/IMG_0440-1200x900.jpeg" alt="Museum Exterior Signage" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">October 31, 2018 &middot; Museum Exterior Signage</div>
+        <div class="article-title">Museum Exterior Signage</div>
+        <div class="article-excerpt">Design and installation of exterior museum signage for the C.O. Polk Interactive Museum — monument signs, overhead illuminated signs, and entrance signage.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museum-planning-workshop/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2016/03/Museum_Design_Thinking.jpg" alt="Museum Planning Workshops" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">January 20, 2017 &middot; Museum Planning Workshop</div>
+        <div class="article-title">Museum Planning Workshops</div>
+        <div class="article-excerpt">The two-day on-site museum planning workshop — how we begin every engagement, setting project objectives and establishing a shared roadmap.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museums-101-pre-order/" class="article-row">
+      <div class="article-img-wrap">
+        <img class="article-img" src="/wp-content/uploads/2015/04/Museums_101.png" alt="Museums 101" loading="lazy">
+      </div>
+      <div>
+        <div class="article-meta">April 12, 2015 &middot; Museums 101</div>
+        <div class="article-title">Museums 101 — Now Available</div>
+        <div class="article-excerpt">After two years of research, writing, and review by industry experts, Museums 101 by Mark Walhimer is now available from AAM Press.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museums-and-net-neutrality/" class="article-row">
+      <div class="no-img-spacer"><div class="no-img-num">19</div></div>
+      <div>
+        <div class="article-meta">May 6, 2014 &middot; Museum Planning</div>
+        <div class="article-title">Museums and Net Neutrality</div>
+        <div class="article-excerpt">The future of informal education, shared authority, and the democratization of content is at risk if net neutrality is not preserved.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+    <a href="/museum-accessibility/" class="article-row">
+      <div class="no-img-spacer"><div class="no-img-num">20</div></div>
+      <div>
+        <div class="article-meta">March 31, 2014 &middot; Museum Exhibition Design</div>
+        <div class="article-title">Museum Accessibility</div>
+        <div class="article-excerpt">Working to bring exhibits up to ADA and National Park Service standards — audio tours, tactile models, and braille graphics for inclusive visitor experiences.</div>
+        <span class="article-read">Read the Article →</span>
+      </div>
+    </a>
+
+  </section>
+
+  <section id="cta-band">
+    <div>
+      <h2 class="cta-h">Ready to build<br>your <em>museum?</em></h2>
+      <p class="cta-body">Mark Walhimer is personally involved in every engagement. We are ready to begin within two weeks of executed agreement.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="/contact/" class="btn-p">Start a Conversation</a>
+      <a href="/services/" class="btn-s">View Services</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; 2026 Museum Planning, LLC</span>
+    <div class="ft-links">
+      <a href="https://museumplanner.org">Museum Planner</a>
+      <a href="https://museums101.com">Museums 101</a>
+      <a href="https://www.museum-experiences.com">Museum Experiences</a>
+      <a href="/contact/">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll',function(){
+      document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+    },{passive:true});
+
+    var hamburger=document.querySelector('.nav-hamburger');
+    var mobileMenu=document.getElementById('mobile-menu');
+    document.querySelectorAll('.mobile-link').forEach(function(l){l.addEventListener('click',function(){mobileMenu.classList.remove('open');hamburger.classList.remove('open');hamburger.setAttribute('aria-expanded',false);document.body.style.overflow='';});});
+    hamburger.addEventListener('click',function(){
+      var open=!mobileMenu.classList.contains('open');
+      mobileMenu.classList.toggle('open',open);
+      hamburger.classList.toggle('open',open);
+      hamburger.setAttribute('aria-expanded',open);
+      document.body.style.overflow=open?'hidden':'';
+    });
+
+    var observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+    },{threshold:0.08});
+    document.querySelectorAll('.article-row').forEach(function(el,i){
+      el.style.transitionDelay=(i%2)*0.07+'s';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

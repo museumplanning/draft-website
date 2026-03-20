@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Museum Planning Tools — Museum Planning LLC</title>
+  <meta name="description" content="Browser-based museum planning tools built by Museum Planning LLC. Strategic planning, master planning, feasibility studies, exhibition design, and more. Free to use, no login required.">
+  <link rel="canonical" href="https://museumplanning.com/tools/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--ink:#18160f;--paper:#efe9df;--warm:#c8b99a;--mid:#9a9088;--accent:#a8864e}
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+    nav.scrolled{background:rgba(239,233,223,0.95);backdrop-filter:blur(12px);border-color:rgba(24,22,15,.07)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:40px;list-style:none}
+    .nav-links a{color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.4;transition:opacity .3s}
+    .nav-links a:hover{opacity:.9}
+    .nav-links a.active{opacity:1;color:var(--accent)}
+    @media(max-width:640px){nav{padding:20px 24px}.nav-links{gap:14px}.nav-links a{font-size:8px}}
+
+    /* HERO */
+    #hero{height:60vh;display:flex;align-items:flex-end;background:var(--paper);padding:0 52px 72px}
+    .hero-inner{max-width:860px}
+    .hero-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--mid);margin-bottom:18px}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7.5vw,108px);font-weight:300;line-height:.93;letter-spacing:-.01em;color:var(--ink);margin-bottom:28px}
+    .hero-h1 em{font-style:italic;color:var(--accent)}
+    .hero-deck{font-size:14px;line-height:1.9;color:var(--mid);max-width:520px}
+    @media(max-width:640px){#hero{padding:100px 24px 60px;height:auto}}
+
+    /* SCHOOL SUITE */
+    #school{padding:100px 52px;background:var(--paper)}
+    .section-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:.8}
+    .section-h{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,52px);font-weight:300;line-height:1.05;color:var(--ink);margin-bottom:16px}
+    .section-h em{font-style:italic;color:var(--accent)}
+    .section-intro{font-size:14px;line-height:1.9;color:var(--mid);max-width:560px;margin-bottom:52px}
+    .school-featured{background:var(--ink);padding:52px;margin-bottom:2px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px}
+    .school-featured-text{}
+    .school-featured-kicker{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+    .school-featured-h{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,42px);font-weight:300;color:var(--paper);margin-bottom:16px;line-height:1.1}
+    .school-featured-desc{font-size:13px;line-height:1.9;color:rgba(239,233,223,.42);max-width:480px}
+    .school-featured-cta{display:inline-block;padding:16px 36px;border:1px solid rgba(239,233,223,.2);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;transition:background .3s,border-color .3s;flex-shrink:0}
+    .school-featured-cta:hover{background:var(--accent);border-color:var(--accent)}
+    .tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1100px}
+    .tool-card{background:rgba(24,22,15,.03);border:1px solid rgba(24,22,15,.07);padding:36px 32px 40px;text-decoration:none;color:inherit;transition:background .3s,transform .3s;display:block}
+    .tool-card:hover{background:rgba(24,22,15,.07);transform:translateY(-2px)}
+    .tool-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:rgba(168,134,78,.15);line-height:1;margin-bottom:-4px}
+    .tool-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);margin-bottom:12px}
+    .tool-desc{font-size:12px;line-height:1.85;color:var(--mid);margin-bottom:20px}
+    .tool-link{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid rgba(168,134,78,.3);padding-bottom:2px}
+    @media(max-width:900px){.tool-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){#school{padding:72px 24px}.tool-grid{grid-template-columns:1fr}.school-featured{grid-template-columns:1fr;gap:28px;padding:32px}}
+
+    /* OTHER TOOLS */
+    #other{padding:0 52px 100px;background:var(--paper)}
+    .other-rule{border:none;border-top:1px solid rgba(24,22,15,.1);margin-bottom:48px}
+    .other-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;max-width:1100px}
+    .other-card{background:rgba(24,22,15,.02);border:1px solid rgba(24,22,15,.06);padding:32px;text-decoration:none;color:inherit;transition:background .3s;display:block}
+    .other-card:hover{background:rgba(24,22,15,.05)}
+    .other-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);margin-bottom:8px}
+    .other-desc{font-size:12px;line-height:1.85;color:var(--mid);margin-bottom:16px}
+    .other-link{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+    @media(max-width:700px){.other-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){#other{padding:0 24px 72px}}
+
+    /* NOTE */
+    #note{background:rgba(24,22,15,.03);border-top:1px solid rgba(24,22,15,.08);padding:64px 52px}
+    .note-inner{max-width:700px;margin:0 auto;text-align:center}
+    .note-h{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,38px);font-weight:300;color:var(--ink);margin-bottom:18px;line-height:1.1}
+    .note-h em{font-style:italic;color:var(--accent)}
+    .note-body{font-size:13px;line-height:1.9;color:var(--mid);margin-bottom:28px}
+    .note-cta{display:inline-block;padding:14px 32px;background:var(--accent);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;transition:background .3s}
+    .note-cta:hover{background:var(--warm);color:var(--ink)}
+    @media(max-width:640px){#note{padding:48px 24px}}
+
+    /* CTA */
+    #cta{background:var(--ink);color:var(--paper);padding:120px 52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:80px}
+    .cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,72px);font-weight:300;line-height:.98}
+    .cta-h em{font-style:italic;color:var(--warm)}
+    .cta-btn{display:inline-block;padding:20px 44px;border:1px solid rgba(239,233,223,.25);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;transition:background .3s,border-color .3s}
+    .cta-btn:hover{background:var(--accent);border-color:var(--accent)}
+    @media(max-width:700px){#cta{grid-template-columns:1fr;gap:36px;padding:72px 24px}}
+
+    footer{background:var(--ink);color:var(--paper);padding:40px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(239,233,223,.06);font-size:10px;letter-spacing:.12em;color:rgba(239,233,223,.2)}
+    footer a{color:rgba(239,233,223,.3);text-decoration:none;transition:color .3s}
+    footer a:hover{color:var(--accent)}
+    .footer-links{display:flex;gap:32px}
+    @media(max-width:640px){footer{flex-direction:column;gap:16px;padding:32px 24px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center;gap:16px}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Museum Planning LLC</a>
+  <ul class="nav-links">
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/services/">Services</a></li>
+      <li><a href="/mvi/">MVI</a></li>
+      <li><a href="/tools/" class="active">Tools</a></li>
+      <li><a href="/thinking/">Thinking</a></li>
+      <li><a href="/books/">Books</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-kicker">Planning Tools</p>
+    <h1 class="hero-h1">Built for<br>museum <em>professionals.</em></h1>
+    <p class="hero-deck">A suite of browser-based planning tools developed by Museum Planning LLC over 25 years of institutional practice. Free to use. No login required. No installation.</p>
+  </div>
+</section>
+
+<section id="school">
+  <p class="section-kicker">Museum School</p>
+  <h2 class="section-h">The complete <em>planning curriculum.</em></h2>
+  <p class="section-intro">Museum School is an integrated suite of tools covering every phase of museum development — from strategic planning through exhibition design. Used by museum directors, board members, and civic leaders.</p>
+
+  <div class="school-featured">
+    <div class="school-featured-text">
+      <p class="school-featured-kicker">Museum School — Full Suite</p>
+      <h3 class="school-featured-h">Strategic · Master · Feasibility · Exhibition · Dashboard</h3>
+      <p class="school-featured-desc">Five integrated tools covering the complete arc of museum planning. Start with strategy, move through master planning and feasibility, design the exhibitions, track performance in the dashboard.</p>
+    </div>
+    <a href="https://museumplanning.github.io/museum-school/" target="_blank" class="school-featured-cta">Open Museum School →</a>
+  </div>
+
+  <div class="tool-grid">
+    <a href="https://museumplanning.github.io/museum-school/strategic" target="_blank" class="tool-card">
+      <div class="tool-num">01</div>
+      <h3 class="tool-name">Strategic Plan</h3>
+      <p class="tool-desc">Interactive strategic planning framework. Mission, vision, goals, and implementation roadmap. Structured for board presentation.</p>
+      <span class="tool-link">Open tool →</span>
+    </a>
+    <a href="https://museumplanning.github.io/museum-school/master" target="_blank" class="tool-card">
+      <div class="tool-num">02</div>
+      <h3 class="tool-name">Master Plan</h3>
+      <p class="tool-desc">Space programming, visitor flow, exhibition framework, capital budget, and phasing strategy in one structured tool.</p>
+      <span class="tool-link">Open tool →</span>
+    </a>
+    <a href="https://museumplanning.github.io/museum-school/feasibility" target="_blank" class="tool-card">
+      <div class="tool-num">03</div>
+      <h3 class="tool-name">Feasibility Study</h3>
+      <p class="tool-desc">Market analysis, visitation projections, operating budget modeling, and site evaluation framework before capital is committed.</p>
+      <span class="tool-link">Open tool →</span>
+    </a>
+    <a href="https://museumplanning.github.io/museum-school/exhibition" target="_blank" class="tool-card">
+      <div class="tool-num">04</div>
+      <h3 class="tool-name">Exhibition Design</h3>
+      <p class="tool-desc">Visitor-centered exhibition planning. Concept development, content hierarchy, interactives matrix, and fabrication brief.</p>
+      <span class="tool-link">Open tool →</span>
+    </a>
+    <a href="https://museumplanning.github.io/museum-school/dashboard" target="_blank" class="tool-card">
+      <div class="tool-num">05</div>
+      <h3 class="tool-name">Director Dashboard</h3>
+      <p class="tool-desc">Operational performance tracking for museum directors. Attendance, revenue, program metrics, and board reporting framework.</p>
+      <span class="tool-link">Open tool →</span>
+    </a>
+    <a href="https://museumplanning.github.io/museum-school/" target="_blank" class="tool-card">
+      <div class="tool-num">→</div>
+      <h3 class="tool-name">Full Museum School</h3>
+      <p class="tool-desc">All five tools in one place, with navigation between phases and a unified planning framework.</p>
+      <span class="tool-link">Open Museum School →</span>
+    </a>
+  </div>
+</section>
+
+<section id="other">
+  <hr class="other-rule">
+  <p class="section-kicker" style="margin-bottom:36px">Additional tools</p>
+  <div class="other-grid">
+    <a href="https://museumplanning.github.io/museums-everywhere/" target="_blank" class="other-card">
+      <h3 class="other-name">Museums Everywhere</h3>
+      <p class="other-desc">An experimental tool that connects what you are looking at right now — a cup of coffee, light on a wall — to an object in a museum collection. Submitted to Prix Ars Electronica 2026.</p>
+      <span class="other-link">Open →</span>
+    </a>
+    <a href="https://museumplanning.github.io/museum-school/installation-builder" target="_blank" class="other-card">
+      <h3 class="other-name">Installation Builder</h3>
+      <p class="other-desc">Plan and document a museum installation from concept through opening. Equipment schedules, spatial diagrams, and technical specifications.</p>
+      <span class="other-link">Open →</span>
+    </a>
+  </div>
+</section>
+
+<section id="note">
+  <div class="note-inner">
+    <h2 class="note-h">Tools are <em>the starting point.</em></h2>
+    <p class="note-body">All tools are open-access and free to use. For a guided engagement — a Museum Vitality Index, a full strategic plan, or concept-through-opening-day work — contact Museum Planning LLC directly.</p>
+    <a href="/mvi/" class="note-cta">Request a Museum Vitality Index →</a>
+  </div>
+</section>
+
+<section id="cta">
+  <h2 class="cta-h">Let's build<br>your <em>museum.</em></h2>
+  <a href="/contact/" class="cta-btn">Start a Conversation →</a>
+</section>
+
+<footer>
+  <span>© 2026 Museum Planning LLC</span>
+  <div class="footer-links">
+    <a href="/work/">Projects</a>
+    <a href="/services/">Services</a>
+    <a href="/mvi/">MVI</a>
+    <a href="/thinking/">Thinking</a>
+    <a href="/books/">Books</a>
+    <a href="/contact/">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Museum Planning Services | Strategic Plans, Feasibility Studies & Master Plans</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #18160f; --paper: #efe9df; --warm: #c8b99a; --mid: #9a9088; --accent: #a8864e;
+    }
+    html { background: var(--ink); font-family: 'Jost', sans-serif; }
+    body { width: 100%; min-height: 100%; background: var(--ink); overflow-x: hidden; }
+    #canvas-wrap { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    canvas { display: block; }
+
+    /* NAV */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 40px; height: 52px;
+      background: rgba(24,22,15,0.90);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(200,185,154,0.08);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--paper); text-decoration: none; opacity: .9; white-space: nowrap; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--paper); text-decoration: none; font-size: 9px; font-weight: 300; letter-spacing: .26em; text-transform: uppercase; opacity: .35; transition: opacity .25s, color .25s; }
+    .nav-links a:hover { opacity: 1; color: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--accent); }
+    @media(max-width:600px) {
+      #nav { padding: 0 16px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 8px; letter-spacing: .14em; }
+      .nav-logo { font-size: 12px; letter-spacing: .12em; }
+    }
+
+    /* PANEL */
+    #panel {
+      position: absolute; top: 0; width: 290px; height: 100%;
+      background: rgba(14,12,8,0.97); z-index: 400;
+      display: flex; flex-direction: column; overflow: hidden;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    #panel.side-right { right:0; left:auto; border-left:1px solid rgba(168,134,78,0.2); transform:translateX(100%); }
+    #panel.side-left  { left:0; right:auto; border-right:1px solid rgba(168,134,78,0.2); transform:translateX(-100%); }
+    #panel.open { transform: translateX(0); }
+    #panel-bar { width:100%; height:3px; background:linear-gradient(to right,var(--accent),var(--warm)); flex-shrink:0; }
+    #panel-body { padding:44px 32px 32px; flex:1; overflow-y:auto; display:flex; flex-direction:column; }
+    #panel-phase { font-size:9px; letter-spacing:.38em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; opacity:.8; }
+    #panel-title { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; line-height:1.08; color:var(--paper); margin-bottom:22px; }
+    #panel-rule { width:32px; height:1px; background:var(--accent); margin-bottom:20px; opacity:.5; }
+    #panel-desc { font-size:13px; line-height:1.9; color:rgba(239,233,223,0.48); flex:1; }
+    #panel-foot { padding:20px 32px; border-top:1px solid rgba(239,233,223,0.07); font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:rgba(239,233,223,0.16); }
+    #panel-close { position:absolute; top:18px; background:none; border:1px solid rgba(239,233,223,0.12); color:rgba(239,233,223,0.38); width:30px; height:30px; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; transition:border-color .3s,color .3s; font-family:'Jost',sans-serif; }
+    #panel.side-right #panel-close { right:18px; }
+    #panel.side-left  #panel-close { left:18px; }
+    #panel-close:hover { border-color:var(--accent); color:var(--warm); }
+
+    /* HINT */
+    #hint { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:rgba(239,233,223,0.2); pointer-events:none; transition:opacity 1.2s; white-space:nowrap; z-index:10; }
+    #hint.hidden { opacity:0; }
+
+    /* SEO TEXT SECTION */
+    #seo-section {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 96px 52px 80px;
+      border-top: 1px solid rgba(200,185,154,0.1);
+    }
+    #seo-section .seo-intro {
+      max-width: 720px;
+      margin: 0 auto 72px;
+      text-align: center;
+    }
+    #seo-section .seo-intro h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--paper);
+      margin-bottom: 20px;
+    }
+    #seo-section .seo-intro h2 em { font-style: italic; color: var(--warm); }
+    #seo-section .seo-intro p {
+      font-size: 14px;
+      line-height: 1.85;
+      color: rgba(239,233,223,0.42);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .seo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .seo-phase {
+      background: rgba(239,233,223,0.025);
+      border: 1px solid rgba(200,185,154,0.07);
+      padding: 44px 40px 48px;
+    }
+    .seo-phase-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px;
+      font-weight: 300;
+      line-height: 1;
+      color: rgba(168,134,78,0.12);
+      margin-bottom: -10px;
+    }
+    .seo-phase-label {
+      font-size: 9px;
+      letter-spacing: .34em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .seo-phase h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--paper);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .seo-phase p {
+      font-size: 13px;
+      line-height: 1.85;
+      color: rgba(239,233,223,0.42);
+      margin-bottom: 24px;
+    }
+    .seo-phase ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .seo-phase ul li {
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(239,233,223,0.32);
+      padding-left: 18px;
+      position: relative;
+    }
+    .seo-phase ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 5px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+    .seo-footer-band {
+      max-width: 1100px;
+      margin: 48px auto 0;
+      padding-top: 32px;
+      border-top: 1px solid rgba(200,185,154,0.07);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .seo-footer-band span {
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: rgba(239,233,223,0.2);
+    }
+    .seo-footer-band a {
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(168,134,78,0.3);
+      padding-bottom: 2px;
+      transition: color .3s, border-color .3s;
+    }
+    .seo-footer-band a:hover { color: var(--warm); border-color: var(--warm); }
+    @media(max-width:700px) {
+      #seo-section { padding: 64px 24px 56px; }
+      .seo-grid { grid-template-columns: 1fr; }
+      .seo-phase { padding: 32px 24px 36px; }
+    }
+  </style>
+  <link rel="canonical" href="https://museumplanning.com/services/">
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Museum <span>Planning</span> LLC</a>
+  <ul class="nav-links">
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/services/" class="active">Services</a></li>
+      <li><a href="/mvi/">MVI</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/thinking/">Thinking</a></li>
+      <li><a href="/books/">Books</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE / IPAD MENU OVERLAY -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigation">
+    <a href="/work/" class="mobile-link">Projects</a>
+    <a href="/services/" class="mobile-link" style="color:var(--accent)">Services</a>
+    <a href="/mvi/" class="mobile-link">MVI</a>
+    <a href="/tools/" class="mobile-link">Tools</a>
+    <a href="/thinking/" class="mobile-link">Thinking</a>
+    <a href="/books/" class="mobile-link">Books</a>
+    <a href="/contact/" class="mobile-link">Contact</a>
+  </div>
+
+<div id="canvas-wrap">
+
+<div id="panel" class="side-right">
+  <div id="panel-bar"></div>
+  <div id="panel-body">
+    <div id="panel-phase"></div>
+    <div id="panel-title"></div>
+    <div id="panel-rule"></div>
+    <div id="panel-desc"></div>
+  </div>
+  <button id="panel-close" aria-label="Close">&#x2715;</button>
+  <div id="panel-foot">Museum Planning LLC</div>
+</div>
+
+<div id="hint">Hover to explore &middot; Click for details</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script>
+
+// ── DATA ────────────────────────────────────────────────────────────────────
+const PHASES = [
+  { label: 'Institutional\nPlanning', nodes: [
+    { label:'Community\nAssessment',      desc:'Evaluate the needs, interests, and demographics of your target community to ensure the museum serves real audience demand before committing to a building project.' },
+    { label:'Mission, Vision\n& Values',  desc:'Articulate why the museum exists, what it aspires to become, and the principles that will guide every decision from planning through long-term operations.' },
+    { label:'Feasibility\nStudy',         desc:'The decision-making roadmap covering attendance projections, revenues, staffing plans, and operating expenses — the tool that right-sizes every project before design begins.' },
+    { label:'Strategic\nPlanning',        desc:'Integrates internal and external perspectives to identify strengths and challenges, creating a clear, actionable multi-year roadmap from early planning to opening day.' }
+  ]},
+  { label: 'Facility\nPlanning', nodes: [
+    { label:'Museum\nMaster Plan',        desc:'The long-term physical and programmatic blueprint — building program, floor plans, exhibit areas, phasing schedule, budget estimates, and capital campaign collateral.' },
+    { label:'Capital\nCampaign Plan',     desc:'Structures the fundraising strategy, donor pipeline, naming opportunities, and campaign timeline required to fund construction, exhibitions, and operating endowment.' },
+    { label:'Visitor Experience\nPlan',   desc:'The complete visitor experience framework — every interaction before, during, and after the visit. Also called the Interpretive Plan or Experience Master Plan.' },
+    { label:'Exhibition\nDesign',         desc:'From conceptual sketches through CAD drawings, fabrication documents, and as-built drawings — interactive, educational, accessible, and visitor-centered throughout.' },
+    { label:'Building\nDesign',           desc:'Architectural programming and design development coordinating all facility requirements, accessibility standards, mechanical systems, and operational adjacencies.' }
+  ]},
+  { label: 'Operational\nPlanning', nodes: [
+    { label:'Disaster Prep /\nEmergency Plan', desc:'Protocols for collection safety, staff emergency response, visitor communication, and institutional continuity during natural disasters or unexpected crises.' },
+    { label:'Public\nProgramming',        desc:"Curate educational events, tours, lectures, family programs, and community initiatives that extend the museum's mission beyond permanent galleries." },
+    { label:'Business\nPlan',             desc:"Comprehensive financial modeling of operating costs, revenue diversification, and staffing structure. Personnel typically accounts for ~60% of a museum's annual costs." },
+    { label:'Marketing\nPlan',            desc:'Visitor-centered digital and traditional strategy encompassing brand identity, audience development, and outreach to drive attendance, membership, and community engagement.' },
+    { label:'Building\nConstruction',     desc:"Owner's representation throughout construction to ensure the building meets program requirements, quality standards, schedule milestones, and budget constraints." },
+    { label:'Exhibition\nFabrication',    desc:'Managing fabrication and installation of all exhibition elements — interactives, display cases, AV systems, and graphics — to meet quality, schedule, and budget targets.' }
+  ]},
+  { label: 'Opening &\nOperations', nodes: [
+    { label:'Museum\nOpening',            desc:'Coordinate the grand opening strategy including press previews, VIP events, community celebrations, ribbon-cutting, and full operational readiness across all departments.' },
+    { label:'Community\nImpact',          desc:"Measure and communicate the museum's cultural, educational, and economic contributions to the region — building the case for continued philanthropic and public support." },
+    { label:'Evaluation',                 desc:'Post-opening assessment of whether exhibitions achieved their educational objectives — and what should continue, be modified, or be overhauled in future iterations.' },
+    { label:'Institutional\nAssessment',  desc:'Comprehensive review of operations, finances, programming effectiveness, and audience reach to inform and launch the next strategic planning cycle.' }
+  ]}
+];
+
+// ── COLOURS ─────────────────────────────────────────────────────────────────
+const C = {
+  ink:   [24,22,15],  paper: [239,233,223],
+  warm:  [200,185,154], mid: [154,144,136],
+  accent:[168,134,78],  gold:[210,172,100]
+};
+
+// ── LAYOUT GLOBALS (single source of truth, set inside calcLayout) ───────────
+let gColXs      = [0,0,0,0];
+let gGroupTops  = [0,0,0,0];
+let gGroupBots  = [0,0,0,0];
+let gNodeR      = 38;
+let gNodeSp     = 80;
+let gContentTop = 140;
+let gMobile     = false;
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+let nodes = [], selectedNode = null, hoveredNode = null;
+let introT = 0, arrowPulse = 0;
+
+// ── DOM ─────────────────────────────────────────────────────────────────────
+const panel      = document.getElementById('panel');
+const panelPhase = document.getElementById('panel-phase');
+const panelTitle = document.getElementById('panel-title');
+const panelDesc  = document.getElementById('panel-desc');
+const hintEl     = document.getElementById('hint');
+document.getElementById('panel-close').addEventListener('click', closePanel);
+
+// ── NODE CLASS ───────────────────────────────────────────────────────────────
+class DiagramNode {
+  constructor(pi, ni, x, y, data, phaseName) {
+    this.pi = pi; this.ni = ni;
+    this.x = x; this.y = y;
+    this.data = data; this.phaseName = phaseName;
+    this.s = 0; this.hover = false; this.selected = false;
+    this.pulse = random(TWO_PI);
+  }
+
+  targetScale(t) {
+    let d = this.pi * 0.18 + this.ni * 0.055;
+    return min(1, easeBack(max(0, (t - d) / 0.28)));
+  }
+
+  update(t) {
+    this.s        = lerp(this.s, this.targetScale(t), 0.12);
+    this.hover    = dist(mouseX, mouseY, this.x, this.y) < gNodeR + 14;
+    this.selected = selectedNode === this;
+  }
+
+  draw() {
+    push();
+    translate(this.x, this.y);
+    scale(this.s);
+
+    let R = gNodeR + (this.hover || this.selected ? 4 + sin(frameCount*0.025+this.pulse)*1.2 : 0);
+
+    if (this.hover || this.selected) {
+      noStroke();
+      fill(C.accent[0],C.accent[1],C.accent[2], 22); starburst(0,0,R+18);
+      fill(C.accent[0],C.accent[1],C.accent[2],  9); starburst(0,0,R+32);
+    }
+
+    if (this.selected) {
+      fill(C.accent[0],C.accent[1],C.accent[2]);
+      stroke(C.gold[0],C.gold[1],C.gold[2],220); strokeWeight(1.5);
+    } else if (this.hover) {
+      fill(C.paper[0],C.paper[1],C.paper[2],248);
+      stroke(C.accent[0],C.accent[1],C.accent[2],220); strokeWeight(1.8);
+    } else {
+      fill(C.paper[0],C.paper[1],C.paper[2],195);
+      stroke(C.warm[0],C.warm[1],C.warm[2],140); strokeWeight(1.1);
+    }
+    starburst(0,0,R);
+
+    if (this.hover || this.selected) {
+      noFill();
+      let gc = this.selected ? C.gold : C.accent;
+      stroke(gc[0],gc[1],gc[2],72); strokeWeight(0.7);
+      ellipse(0,0,R*1.3,R*1.3);
+    }
+
+    noStroke();
+    fill(this.selected ? C.paper[0]:C.ink[0], this.selected?C.paper[1]:C.ink[1], this.selected?C.paper[2]:C.ink[2]);
+    textAlign(CENTER,CENTER);
+    textFont('Cormorant Garamond');
+    textStyle(this.hover||this.selected ? ITALIC : NORMAL);
+    let ts = constrain(gNodeR*0.27, 8.5, 12);
+    textSize(ts); textLeading(ts*1.38);
+    text(this.data.label, 0, 0);
+    pop();
+  }
+
+  hit(mx,my){ return dist(mx,my,this.x,this.y) < gNodeR+14; }
+}
+
+// ── HELPERS ─────────────────────────────────────────────────────────────────
+function starburst(x, y, r) {
+  const pts = 14;
+  beginShape();
+  for (let i = 0; i < pts*2; i++) {
+    let a  = (i/(pts*2))*TWO_PI - HALF_PI;
+    let rr = (i%2===0) ? r : r*0.86;
+    vertex(x+cos(a)*rr, y+sin(a)*rr);
+  }
+  endShape(CLOSE);
+}
+
+function easeBack(t) {
+  const c1=1.70158, c3=c1+1;
+  return 1 + c3*pow(t-1,3) + c1*pow(t-1,2);
+}
+
+// ── LAYOUT ──────────────────────────────────────────────────────────────────
+function calcLayout() {
+  nodes = [];
+  gMobile = width < 650;
+
+  const NAV_H  = 52;
+  const HDR_H  = gMobile ? 66 : 98;
+  const FOOT_H = 26;
+  const PAD    = gMobile ? 16 : 32;
+
+  gContentTop = NAV_H + HDR_H;
+  const contentH = height - gContentTop - FOOT_H;
+
+  const cols = gMobile ? 2 : 4;
+  const colW = (width - PAD*2) / cols;
+
+  // Node radius: 28% of column width, clamped 20-42
+  gNodeR = constrain(colW * 0.28, 20, 42);
+
+  const maxN = max(PHASES.map(p => p.nodes.length)); // 6
+
+  if (gMobile) {
+    // 2x2 grid: phases 0&1 in top half, 2&3 in bottom half
+    const halfH = contentH / 2;
+    const rowY  = [gContentTop, gContentTop + halfH];
+    const colCX = [PAD + colW*0.5, PAD + colW*1.5];
+
+    PHASES.forEach((phase, pi) => {
+      const row = pi < 2 ? 0 : 1;
+      const col = pi % 2;
+      const cx  = colCX[col];
+      const n   = phase.nodes.length;
+      // spacing capped so nodes stay within their half
+      const sp  = constrain((halfH - gNodeR*2) / max(n-1,1), gNodeR*1.5, gNodeR*2.6);
+      const gH  = (n-1) * sp;
+      const gT  = rowY[row] + (halfH - gH) / 2;
+
+      gColXs[pi]     = cx;
+      gGroupTops[pi] = gT;
+      gGroupBots[pi] = gT + gH;
+
+      phase.nodes.forEach((d,ni) =>
+        nodes.push(new DiagramNode(pi, ni, cx, gT + ni*sp, d, phase.label.replace('\n',' ')))
+      );
+    });
+
+  } else {
+    // 4-column linear — uniform spacing derived from the tallest phase
+    gNodeSp = constrain((contentH - gNodeR*2) / max(maxN-1,1), gNodeR*1.6, gNodeR*2.5);
+
+    for (let i=0; i<4; i++) gColXs[i] = PAD + colW*(i+0.5);
+
+    PHASES.forEach((phase, pi) => {
+      const n  = phase.nodes.length;
+      const gH = (n-1) * gNodeSp;
+      const gT = gContentTop + (contentH - gH) / 2;
+
+      gGroupTops[pi] = gT;
+      gGroupBots[pi] = gT + gH;
+
+      phase.nodes.forEach((d,ni) =>
+        nodes.push(new DiagramNode(pi, ni, gColXs[pi], gT + ni*gNodeSp, d, phase.label.replace('\n',' ')))
+      );
+    });
+  }
+}
+
+// ── PANEL ───────────────────────────────────────────────────────────────────
+function openPanel(node) {
+  selectedNode = node;
+  panelPhase.textContent = node.phaseName;
+  panelTitle.innerHTML   = node.data.label.replace('\n','<br>');
+  panelDesc.textContent  = node.data.desc;
+
+  // Open on OPPOSITE side from node's column
+  // Mobile: even col (0,2) = left half → panel right; odd col (1,3) = right half → panel left
+  // Desktop: pi 0-1 = left → panel right; pi 2-3 = right → panel left
+  const nodeLeft = gMobile ? (node.pi%2===0) : (node.pi<=1);
+  const side = nodeLeft ? 'side-right' : 'side-left';
+
+  panel.classList.remove('side-left','side-right','open');
+  void panel.offsetWidth;
+  panel.classList.add(side);
+  requestAnimationFrame(() => panel.classList.add('open'));
+  hintEl.classList.add('hidden');
+}
+
+function closePanel() {
+  selectedNode = null;
+  panel.classList.remove('open');
+}
+
+// ── P5 ──────────────────────────────────────────────────────────────────────
+function setup() {
+  let cnv = createCanvas(windowWidth, windowHeight);
+  cnv.parent('canvas-wrap');
+  textFont('Cormorant Garamond');
+  calcLayout();
+  setTimeout(()=>{ if(!selectedNode) hintEl.classList.add('hidden'); }, 7000);
+}
+
+function draw() {
+  introT     = min(1, introT + 0.008);
+  arrowPulse = (arrowPulse + 0.004) % 1;
+
+  // Background + gradient
+  background(C.ink[0],C.ink[1],C.ink[2]);
+  noStroke();
+  let gr = drawingContext.createLinearGradient(0,0,0,height);
+  gr.addColorStop(0,'rgba(34,28,18,0.55)');
+  gr.addColorStop(1,'rgba(8,6,3,0.22)');
+  drawingContext.fillStyle = gr;
+  rect(0,0,width,height);
+
+  drawHeader();
+  drawPhaseLabels();
+  drawArrows();
+  drawBrackets();
+
+  // Copyright — painted before nodes so nodes are always on top
+  noStroke();
+  fill(C.warm[0],C.warm[1],C.warm[2],50);
+  textAlign(LEFT,BOTTOM);
+  textFont('Jost'); textStyle(NORMAL);
+  textSize(gMobile ? 7 : 9);
+  text('\u00a9 2026 Museum Planning LLC \u00b7 museumplanning.com', gMobile?14:32, height-8);
+
+  // Draw nodes
+  hoveredNode = null;
+  for (let n of nodes) {
+    n.update(introT);
+    if (n.hover && n.s>0.5) hoveredNode = n;
+  }
+  for (let n of nodes) { if (!n.hover && !n.selected) n.draw(); }
+  for (let n of nodes) { if ( n.hover ||  n.selected) n.draw(); }
+
+  cursor(hoveredNode ? HAND : ARROW);
+}
+
+// ── DRAW HELPERS ─────────────────────────────────────────────────────────────
+function drawHeader() {
+  const TY = 58; // just below 52px nav bar
+  if (gMobile) {
+    noStroke();
+    fill(C.paper[0],C.paper[1],C.paper[2],185);
+    textAlign(CENTER,TOP);
+    textFont('Cormorant Garamond'); textStyle(ITALIC); textSize(16);
+    text('Museum Planning Process', width/2, TY);
+    return;
+  }
+  stroke(C.accent[0],C.accent[1],C.accent[2],95); strokeWeight(1);
+  line(32,TY,56,TY);
+  noStroke();
+  textAlign(LEFT,TOP); textFont('Cormorant Garamond');
+  textStyle(NORMAL); textSize(20);
+  fill(C.paper[0],C.paper[1],C.paper[2],210);
+  text('Museum Planning', 32, TY+7);
+  textStyle(ITALIC);
+  fill(C.warm[0],C.warm[1],C.warm[2],180);
+  text('Process Overview', 32+162, TY+7);
+  noStroke();
+  fill(C.mid[0],C.mid[1],C.mid[2],95);
+  textAlign(CENTER,TOP); textFont('Jost'); textStyle(NORMAL); textSize(8);
+  drawingContext.letterSpacing = '2.2px';
+  text('HOVER TO EXPLORE  \u00b7  CLICK FOR DETAILS', width/2, TY+9);
+  drawingContext.letterSpacing = '0px';
+}
+
+function drawPhaseLabels() {
+  PHASES.forEach((phase, pi) => {
+    const cx    = gColXs[pi];
+    const alpha = constrain((introT - pi*0.18)/0.3, 0, 1);
+    const col   = (pi===0||pi===3) ? C.accent : C.warm;
+
+    // Sit label above each phase's top node
+    const labelBase = gGroupTops[pi] - gNodeR - (gMobile ? 28 : 54);
+
+    push();
+    noStroke(); textAlign(CENTER,TOP);
+
+    // Ghost number
+    textFont('Cormorant Garamond'); textStyle(NORMAL);
+    textSize(gMobile ? 19 : 36);
+    fill(col[0],col[1],col[2], (gMobile?52:30)*alpha);
+    text('0'+(pi+1), cx, labelBase);
+
+    // Name
+    textFont('Jost'); textSize(gMobile ? 7 : 8);
+    fill(col[0],col[1],col[2], 180*alpha);
+    const ln1 = phase.label.split('\n')[0].toUpperCase();
+    const ln2 = phase.label.split('\n')[1] ? phase.label.split('\n')[1].toUpperCase() : '';
+    const nameY = labelBase + (gMobile?18:32);
+    text(ln1, cx, nameY);
+    if (ln2) text(ln2, cx, nameY+(gMobile?10:11));
+
+    // Underline
+    stroke(col[0],col[1],col[2], 72*alpha); strokeWeight(1);
+    const uw = gMobile ? 20 : 28;
+    const lineY = nameY + (gMobile?20:23);
+    line(cx-uw/2, lineY, cx+uw/2, lineY);
+    pop();
+  });
+}
+
+function drawArrows() {
+  if (gMobile) {
+    // Down arrows between top-row and bottom-row columns
+    for (let col=0; col<2; col++) {
+      const topPi = col, botPi = col+2;
+      const cx = gColXs[topPi];
+      const y1 = gGroupBots[topPi] + gNodeR + 5;
+      const y2 = gGroupTops[botPi] - gNodeR - 5;
+      if (y2 <= y1+4) continue;
+      const alpha = constrain((introT-0.38)/0.3, 0, 1);
+      push();
+      stroke(C.warm[0],C.warm[1],C.warm[2], 34*alpha); strokeWeight(1);
+      line(cx,y1,cx,y2);
+      fill(C.warm[0],C.warm[1],C.warm[2], 68*alpha); noStroke();
+      const ah=5;
+      triangle(cx,y2+ah, cx-ah*0.65,y2-2, cx+ah*0.65,y2-2);
+      for (let d=0; d<2; d++) {
+        const t = (arrowPulse + d*0.5 + col*0.25) % 1;
+        const py = lerp(y1,y2,t);
+        fill(C.accent[0],C.accent[1],C.accent[2], sin(t*PI)*140*alpha); noStroke();
+        ellipse(cx,py,4,4);
+      }
+      pop();
+    }
+    return;
+  }
+
+  // Desktop: horizontal arrows, positioned at the average vertical centre
+  const midY = (gGroupTops.reduce((a,b)=>a+b,0)/4 + gGroupBots.reduce((a,b)=>a+b,0)/4) / 2;
+
+  for (let i=0; i<3; i++) {
+    const x1 = gColXs[i]   + gNodeR + 4;
+    const x2 = gColXs[i+1] - gNodeR - 4;
+    if (x2<=x1) continue;
+    const alpha = constrain((introT-(i+1)*0.2)/0.3, 0, 1);
+    push();
+    stroke(C.warm[0],C.warm[1],C.warm[2], 36*alpha); strokeWeight(1);
+    line(x1,midY,x2,midY);
+    const ah=6;
+    fill(C.warm[0],C.warm[1],C.warm[2], 70*alpha); noStroke();
+    triangle(x2+ah,midY, x2-3,midY-ah*0.55, x2-3,midY+ah*0.55);
+    for (let d=0; d<3; d++) {
+      const t = (arrowPulse + d*0.333 + i*0.11) % 1;
+      const px = lerp(x1,x2,t);
+      fill(C.accent[0],C.accent[1],C.accent[2], sin(t*PI)*168*alpha); noStroke();
+      ellipse(px,midY,4,4);
+    }
+    pop();
+  }
+}
+
+function drawBrackets() {
+  PHASES.forEach((phase, pi) => {
+    const cx    = gColXs[pi];
+    const ty    = gGroupTops[pi] - 6;
+    const by    = gGroupBots[pi] + 6;
+    const bx    = cx - gNodeR - (gMobile ? 9 : 14);
+    const alpha = constrain((introT - pi*0.18)/0.35, 0, 1);
+    push();
+    stroke(C.warm[0],C.warm[1],C.warm[2], 27*alpha); strokeWeight(1); noFill();
+    line(bx+5,ty, bx,ty);
+    line(bx,ty,   bx,by);
+    line(bx,by,   bx+5,by);
+    pop();
+  });
+}
+
+// ── INTERACTION ──────────────────────────────────────────────────────────────
+function mouseClicked() {
+  for (let n of nodes) {
+    if (n.hit(mouseX,mouseY) && n.s>0.5) {
+      openPanel(n);
+      return;
+    }
+  }
+  closePanel();
+}
+
+function touchStarted() {
+  for (let n of nodes) {
+    if (n.hit(mouseX,mouseY) && n.s>0.5) {
+      openPanel(n);
+      return false;
+    }
+  }
+  closePanel();
+  return false;
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  calcLayout();
+}
+
+</script>
+</div><!-- /canvas-wrap -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO CONTENT — structured for search engines.
+     Visitors interact with the diagram above.
+     Google reads this.
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="seo-section" aria-label="Museum Planning Services">
+
+  <div class="seo-intro">
+    <h2>Museum Planning Services:<br><em>From Vision to Opening Day</em></h2>
+    <p>Museum Planning LLC guides cultural institutions through every stage of development — from the first community assessment through post-opening evaluation. Our four-phase process has shaped more than 40 museums worldwide over 25 years of practice.</p>
+  </div>
+
+  <div class="seo-grid">
+
+    <div class="seo-phase">
+      <div class="seo-phase-num">01</div>
+      <div class="seo-phase-label">Phase One</div>
+      <h3>Institutional Planning</h3>
+      <p>Before a single line is drawn, museums need a clear strategic foundation. Institutional planning establishes why the museum exists, who it serves, and whether it can operate sustainably. This phase produces the critical documents that boards, donors, and civic partners need before committing capital.</p>
+      <ul>
+        <li>Community Assessment — audience research and needs analysis</li>
+        <li>Mission, Vision &amp; Values — organizational identity framework</li>
+        <li>Feasibility Study — attendance projections, staffing, and operating cost modeling</li>
+        <li>Strategic Planning — multi-year roadmap from planning through opening</li>
+      </ul>
+    </div>
+
+    <div class="seo-phase">
+      <div class="seo-phase-num">02</div>
+      <div class="seo-phase-label">Phase Two</div>
+      <h3>Facility Planning</h3>
+      <p>Facility planning translates institutional goals into physical space. This phase produces the blueprints — programmatic, experiential, and architectural — that govern every construction and design decision. It also structures the capital campaign required to fund the building and its exhibitions.</p>
+      <ul>
+        <li>Museum Master Plan — building program, floor plans, phasing, and budget</li>
+        <li>Capital Campaign Plan — fundraising strategy, donor pipeline, naming opportunities</li>
+        <li>Visitor Experience Plan — interpretive framework for every guest touchpoint</li>
+        <li>Exhibition Design — concept through fabrication-ready CAD documentation</li>
+        <li>Building Design — architectural programming and systems coordination</li>
+      </ul>
+    </div>
+
+    <div class="seo-phase">
+      <div class="seo-phase-num">03</div>
+      <div class="seo-phase-label">Phase Three</div>
+      <h3>Operational Planning</h3>
+      <p>As construction progresses, the institution must be ready to operate on opening day. Operational planning builds the systems, plans, and infrastructure that keep a museum running — financially, programmatically, and physically. Personnel typically accounts for 60% of a museum's annual budget, making staffing modeling essential.</p>
+      <ul>
+        <li>Disaster Preparedness &amp; Emergency Response Plan</li>
+        <li>Public Programming — tours, events, education, and community initiatives</li>
+        <li>Business Plan — operating cost modeling and revenue diversification strategy</li>
+        <li>Marketing Plan — brand identity, digital strategy, and audience development</li>
+        <li>Building Construction — owner's representation through the construction phase</li>
+        <li>Exhibition Fabrication — oversight of interactives, AV, graphics, and installation</li>
+      </ul>
+    </div>
+
+    <div class="seo-phase">
+      <div class="seo-phase-num">04</div>
+      <div class="seo-phase-label">Phase Four</div>
+      <h3>Opening &amp; Operations</h3>
+      <p>A successful opening is planned, not improvised. The final phase covers grand opening strategy, early-stage community engagement, and the formal evaluation cycles that determine what's working and what must evolve. Post-opening assessment closes the loop and initiates the next strategic planning cycle.</p>
+      <ul>
+        <li>Museum Opening — press previews, VIP events, ribbon-cutting coordination</li>
+        <li>Community Impact — measuring cultural, educational, and economic contributions</li>
+        <li>Evaluation — exhibition effectiveness assessment against learning objectives</li>
+        <li>Institutional Assessment — full operational review to launch the next planning cycle</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="seo-footer-band">
+    <span>&copy; 2026 Museum Planning LLC &mdash; All rights reserved.</span>
+    <a href="/contact/">Start a conversation &rarr;</a>
+  </div>
+
+</section>
+</body>
+</html>

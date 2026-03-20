@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Museum Vitality Index — Museum Planning LLC</title>
+  <meta name="description" content="The Museum Vitality Index (MVI) is a $5,000 diagnostic that benchmarks museum performance across five dimensions. Delivered in 7 business days. The entry point to every Museum Planning LLC engagement.">
+  <link rel="canonical" href="https://museumplanning.com/mvi/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--ink:#18160f;--paper:#efe9df;--warm:#c8b99a;--mid:#9a9088;--accent:#a8864e}
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+    nav.scrolled{background:rgba(239,233,223,0.95);backdrop-filter:blur(12px);border-color:rgba(24,22,15,.07)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:40px;list-style:none}
+    .nav-links a{color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.4;transition:opacity .3s}
+    .nav-links a:hover{opacity:.9}
+    .nav-links a.active{opacity:1;color:var(--accent)}
+    @media(max-width:640px){nav{padding:20px 24px}.nav-links{gap:16px}.nav-links a{font-size:8px}}
+
+    /* HERO */
+    #hero{min-height:70vh;display:flex;align-items:flex-end;background:var(--ink);padding:0 52px 80px;position:relative;overflow:hidden}
+    #hero::before{content:'';position:absolute;top:-200px;right:-200px;width:700px;height:700px;border:1px solid rgba(168,134,78,.06);border-radius:50%}
+    #hero::after{content:'';position:absolute;top:-120px;right:-120px;width:500px;height:500px;border:1px solid rgba(168,134,78,.04);border-radius:50%}
+    .hero-inner{position:relative;z-index:1;max-width:860px}
+    .hero-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;opacity:.8}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,100px);font-weight:300;line-height:.95;letter-spacing:-.01em;color:var(--paper);margin-bottom:32px}
+    .hero-h1 em{font-style:italic;color:var(--warm)}
+    .hero-deck{font-size:14px;line-height:1.9;color:rgba(239,233,223,.45);max-width:520px;margin-bottom:48px}
+    .hero-cta{display:inline-block;padding:16px 36px;background:var(--accent);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;transition:background .3s}
+    .hero-cta:hover{background:var(--warm);color:var(--ink)}
+    .hero-stats{display:flex;gap:0;margin-top:72px;border-top:1px solid rgba(239,233,223,.08)}
+    .hero-stat{padding:28px 40px 0;border-right:1px solid rgba(239,233,223,.06);flex:1}
+    .hero-stat:last-child{border-right:none}
+    .stat-val{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--accent);line-height:1;display:block;margin-bottom:6px}
+    .stat-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,233,223,.28)}
+    @media(max-width:640px){#hero{padding:100px 24px 60px}.hero-stats{flex-direction:column}.hero-stat{padding:20px 0;border-right:none;border-top:1px solid rgba(239,233,223,.06)}}
+
+    /* WHAT */
+    #what{padding:100px 52px;background:var(--paper)}
+    .section-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:.8}
+    .what-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1100px}
+    .what-h{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,58px);font-weight:300;line-height:1.05;color:var(--ink);margin-bottom:28px}
+    .what-h em{font-style:italic;color:var(--accent)}
+    .what-body{font-size:14px;line-height:2;color:var(--mid)}
+    .what-body p+p{margin-top:18px}
+    @media(max-width:800px){.what-grid{grid-template-columns:1fr;gap:40px}}
+    @media(max-width:640px){#what{padding:72px 24px}}
+
+    /* FIVE DIMENSIONS */
+    #dimensions{padding:0 52px 100px;background:var(--paper)}
+    .dim-label{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--mid);margin-bottom:48px;padding-top:48px;border-top:1px solid rgba(24,22,15,.1)}
+    .dim-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;max-width:1100px}
+    .dim-card{background:rgba(24,22,15,.03);border:1px solid rgba(24,22,15,.07);padding:36px 28px 40px;transition:background .3s}
+    .dim-card:hover{background:rgba(24,22,15,.06)}
+    .dim-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:rgba(168,134,78,.15);line-height:1;margin-bottom:-8px}
+    .dim-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:14px;line-height:1.15}
+    .dim-desc{font-size:12px;line-height:1.85;color:var(--mid)}
+    @media(max-width:900px){.dim-grid{grid-template-columns:repeat(2,1fr)}.dim-grid .dim-card:last-child{grid-column:1/-1}}
+    @media(max-width:640px){#dimensions{padding:0 24px 72px}.dim-grid{grid-template-columns:1fr}}
+
+    /* DELIVERABLE */
+    #deliverable{padding:100px 52px;background:var(--ink);color:var(--paper)}
+    .deliv-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1100px}
+    .deliv-h{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,58px);font-weight:300;line-height:1.05;color:var(--paper);margin-bottom:32px}
+    .deliv-h em{font-style:italic;color:var(--warm)}
+    .deliv-list{display:flex;flex-direction:column;gap:0}
+    .deliv-item{padding:20px 0;border-bottom:1px solid rgba(239,233,223,.07);display:flex;gap:20px;align-items:start}
+    .deliv-check{width:18px;height:18px;border:1px solid rgba(168,134,78,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+    .deliv-check::after{content:'';width:6px;height:6px;background:var(--accent)}
+    .deliv-text{font-size:14px;line-height:1.7;color:rgba(239,233,223,.55)}
+    .deliv-text strong{color:var(--paper);font-weight:400}
+    .price-block{border:1px solid rgba(168,134,78,.2);padding:48px 40px;background:rgba(168,134,78,.04)}
+    .price-label{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+    .price-val{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;color:var(--paper);line-height:1;margin-bottom:8px}
+    .price-note{font-size:12px;color:rgba(239,233,223,.3);line-height:1.7;margin-bottom:32px}
+    .price-cta{display:inline-block;padding:16px 36px;background:var(--accent);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;transition:background .3s;width:100%;text-align:center}
+    .price-cta:hover{background:var(--warm);color:var(--ink)}
+    .also-avail{margin-top:28px;padding-top:28px;border-top:1px solid rgba(239,233,223,.07)}
+    .also-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,233,223,.2);margin-bottom:12px}
+    .also-name{font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(239,233,223,.5);margin-bottom:6px}
+    .also-desc{font-size:12px;color:rgba(239,233,223,.25);line-height:1.7}
+    @media(max-width:800px){.deliv-grid{grid-template-columns:1fr;gap:48px}}
+    @media(max-width:640px){#deliverable{padding:72px 24px}.price-val{font-size:52px}}
+
+    /* WHO */
+    #who{padding:100px 52px;background:var(--paper)}
+    .who-h{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,58px);font-weight:300;line-height:1.05;color:var(--ink);margin-bottom:52px;max-width:700px}
+    .who-h em{font-style:italic;color:var(--accent)}
+    .who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1100px}
+    .who-card{background:rgba(24,22,15,.03);border:1px solid rgba(24,22,15,.07);padding:36px 32px 40px}
+    .who-role{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+    .who-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--ink);margin-bottom:16px}
+    .who-desc{font-size:13px;line-height:1.9;color:var(--mid)}
+    @media(max-width:800px){.who-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){#who{padding:72px 24px}}
+
+    /* SAMPLES */
+    #samples{padding:0 52px 100px;background:var(--paper)}
+    .samples-label{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--mid);margin-bottom:36px;padding-top:48px;border-top:1px solid rgba(24,22,15,.1)}
+    .sample-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1100px}
+    .sample-card{background:rgba(24,22,15,.03);border:1px solid rgba(24,22,15,.07);padding:32px;transition:background .3s}
+    .sample-card:hover{background:rgba(24,22,15,.06)}
+    .sample-institution{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:6px}
+    .sample-city{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+    .sample-score{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(168,134,78,.3);line-height:1;margin-bottom:12px}
+    .sample-note{font-size:12px;line-height:1.7;color:var(--mid)}
+    @media(max-width:800px){.sample-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){#samples{padding:0 24px 72px}}
+
+    /* CTA */
+    #cta{background:var(--ink);color:var(--paper);padding:120px 52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:80px}
+    .cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,72px);font-weight:300;line-height:.98}
+    .cta-h em{font-style:italic;color:var(--warm)}
+    .cta-btn{display:inline-block;padding:20px 44px;border:1px solid rgba(239,233,223,.25);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;transition:background .3s,border-color .3s}
+    .cta-btn:hover{background:var(--accent);border-color:var(--accent)}
+    @media(max-width:700px){#cta{grid-template-columns:1fr;gap:36px;padding:72px 24px}}
+
+    footer{background:var(--ink);color:var(--paper);padding:40px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(239,233,223,.06);font-size:10px;letter-spacing:.12em;color:rgba(239,233,223,.2)}
+    footer a{color:rgba(239,233,223,.3);text-decoration:none;transition:color .3s}
+    footer a:hover{color:var(--accent)}
+    .footer-links{display:flex;gap:32px}
+    @media(max-width:640px){footer{flex-direction:column;gap:16px;padding:32px 24px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center;gap:16px}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Museum Planning LLC</a>
+  <ul class="nav-links">
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/services/">Services</a></li>
+      <li><a href="/mvi/" class="active">MVI</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/thinking/">Thinking</a></li>
+      <li><a href="/books/">Books</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-kicker">Museum Vitality Index</p>
+    <h1 class="hero-h1">Know where you stand<br>before you decide<br><em>where to go.</em></h1>
+    <p class="hero-deck">A $5,000 diagnostic that benchmarks your institution's performance across five dimensions. Delivered in 7 business days. The starting point for every Museum Planning LLC engagement.</p>
+    <a href="/contact/?subject=MVI+Request" class="hero-cta">Request an MVI</a>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="stat-val">$5,000</span>
+        <span class="stat-label">Flat fee</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-val">7</span>
+        <span class="stat-label">Business days</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-val">0–100</span>
+        <span class="stat-label">Scored report</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-val">5</span>
+        <span class="stat-label">Dimensions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <p class="section-kicker">What it is</p>
+  <div class="what-grid">
+    <div>
+      <h2 class="what-h">A measurement tool for <em>institutional health.</em></h2>
+    </div>
+    <div class="what-body">
+      <p>Museum boards and executive directors make capital decisions — programming investments, capital campaigns, staffing changes — without normalized data to guide them. The MVI changes that.</p>
+      <p>Using public data, Form 990 filings, social media metrics, and client-supplied figures, Museum Planning LLC scores your institution against a benchmark database of comparable museums. The result is a clear, actionable picture of where you are strong, where you are vulnerable, and what to do next.</p>
+      <p>No competing product offers a normalized, ratio-based diagnostic that scales from a $300K community museum to a $25M national institution.</p>
+    </div>
+  </div>
+</section>
+
+<section id="dimensions">
+  <p class="dim-label">Five dimensions of institutional health</p>
+  <div class="dim-grid">
+    <div class="dim-card">
+      <div class="dim-num">01</div>
+      <h3 class="dim-name">Visitor Experience</h3>
+      <p class="dim-desc">Attendance trends, repeat visitation, TripAdvisor signals, program diversity, and accessibility indicators.</p>
+    </div>
+    <div class="dim-card">
+      <div class="dim-num">02</div>
+      <h3 class="dim-name">Digital Presence</h3>
+      <p class="dim-desc">Website quality, search visibility, social media engagement, and digital content strategy.</p>
+    </div>
+    <div class="dim-card">
+      <div class="dim-num">03</div>
+      <h3 class="dim-name">Financial Health</h3>
+      <p class="dim-desc">Revenue diversification, earned income ratios, endowment strength, and operating reserve sustainability.</p>
+    </div>
+    <div class="dim-card">
+      <div class="dim-num">04</div>
+      <h3 class="dim-name">Community Impact</h3>
+      <p class="dim-desc">School and community partnerships, earned media, civic relationships, and educational program reach.</p>
+    </div>
+    <div class="dim-card">
+      <div class="dim-num">05</div>
+      <h3 class="dim-name">Institutional Strength</h3>
+      <p class="dim-desc">Governance structure, staff depth, collections stewardship, and accreditation standing.</p>
+    </div>
+  </div>
+</section>
+
+<section id="deliverable">
+  <div class="deliv-grid">
+    <div>
+      <h2 class="deliv-h">What you <em>receive.</em></h2>
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="deliv-check"></div>
+          <p class="deliv-text"><strong>Full MVI scored report (0–100)</strong> across all five dimensions with peer institution comparison</p>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-check"></div>
+          <p class="deliv-text"><strong>Highest-leverage improvement areas</strong> ranked by impact and feasibility</p>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-check"></div>
+          <p class="deliv-text"><strong>Capital campaign readiness assessment</strong> — where you are in the cycle and what needs to happen first</p>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-check"></div>
+          <p class="deliv-text"><strong>Competitive landscape snapshot</strong> — peer institutions, market position, differentiation opportunities</p>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-check"></div>
+          <p class="deliv-text"><strong>Pathway to larger strategic engagement</strong> if warranted — no obligation</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="price-block">
+        <p class="price-label">Investment</p>
+        <div class="price-val">$5,000</div>
+        <p class="price-note">Flat fee · 7 business days from completed data intake · Delivered digitally · No retainer required</p>
+        <a href="/contact/?subject=MVI+Request" class="price-cta">Request an MVI →</a>
+        <div class="also-avail">
+          <p class="also-label">Also available</p>
+          <p class="also-name">Museum Feasibility Index (MFI)</p>
+          <p class="also-desc">For communities planning a new institution. Projects visitation, operating budget, and competitive landscape before capital is committed. Same fee, same delivery timeline.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="who">
+  <h2 class="who-h">Who requests <em>an MVI.</em></h2>
+  <div class="who-grid">
+    <div class="who-card">
+      <p class="who-role">Board Leadership</p>
+      <h3 class="who-name">The Board Chair</h3>
+      <p class="who-desc">Preparing for a capital campaign and needs credible data for the major gift conversation. Wants to walk into the lead donor meeting with a score, not an opinion.</p>
+    </div>
+    <div class="who-card">
+      <p class="who-role">Institutional Leadership</p>
+      <h3 class="who-name">The Executive Director</h3>
+      <p class="who-desc">Needs to make the case to the board for a strategic change — new programming direction, staffing investment, physical expansion. The MVI is the evidence.</p>
+    </div>
+    <div class="who-card">
+      <p class="who-role">Civic Leadership</p>
+      <h3 class="who-name">The Mayor or City Council</h3>
+      <p class="who-desc">Evaluating a public institution before committing municipal funds or land. Needs an independent assessment from someone who has seen 40 institutions across three continents.</p>
+    </div>
+  </div>
+</section>
+
+<section id="samples">
+  <p class="samples-label">Recent MVI engagements</p>
+  <div class="sample-grid">
+    <div class="sample-card">
+      <h3 class="sample-institution">Connecticut River Museum</h3>
+      <p class="sample-city">Essex, Connecticut</p>
+      <div class="sample-score">74</div>
+      <p class="sample-note">MVI identified digital presence as highest-leverage improvement area. Capital campaign readiness: 18 months with targeted investment.</p>
+    </div>
+    <div class="sample-card">
+      <h3 class="sample-institution">Historic New Orleans Collection</h3>
+      <p class="sample-city">New Orleans, Louisiana</p>
+      <div class="sample-score">81</div>
+      <p class="sample-note">Strong institutional foundation. MVI surfaced community engagement gap relative to peer institutions in comparable markets.</p>
+    </div>
+    <div class="sample-card">
+      <h3 class="sample-institution">Mystic Seaport Museum</h3>
+      <p class="sample-city">Mystic, Connecticut</p>
+      <div class="sample-score">88</div>
+      <p class="sample-note">High-performing institution. MVI confirmed capital campaign readiness and provided peer benchmarking for board presentation.</p>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <h2 class="cta-h">Start with<br>a <em>conversation.</em></h2>
+  <a href="/contact/?subject=MVI+Request" class="cta-btn">Request an MVI — $5,000 →</a>
+</section>
+
+<footer>
+  <span>© 2026 Museum Planning LLC</span>
+  <div class="footer-links">
+    <a href="/work/">Projects</a>
+    <a href="/services/">Services</a>
+    <a href="/tools/">Tools</a>
+    <a href="/thinking/">Thinking</a>
+    <a href="/books/">Books</a>
+    <a href="/contact/">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+</script>
+</body>
+</html>

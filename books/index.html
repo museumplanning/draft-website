@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books — Museum Planning LLC</title>
+  <meta name="description" content="Museums 101 and Designing Museum Experiences — the standard references for museum planning and design by Mark Walhimer, published by Bloomsbury. Second edition forthcoming.">
+  <link rel="canonical" href="https://museumplanning.com/books/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--ink:#18160f;--paper:#efe9df;--warm:#c8b99a;--mid:#9a9088;--accent:#a8864e}
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+    nav.scrolled{background:rgba(239,233,223,0.95);backdrop-filter:blur(12px);border-color:rgba(24,22,15,.07)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:40px;list-style:none}
+    .nav-links a{color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.4;transition:opacity .3s}
+    .nav-links a:hover{opacity:.9}
+    .nav-links a.active{opacity:1;color:var(--accent)}
+    @media(max-width:640px){nav{padding:20px 24px}.nav-links{gap:14px}.nav-links a{font-size:8px}}
+
+    /* HERO */
+    #hero{min-height:55vh;display:flex;align-items:flex-end;background:var(--paper);padding:0 52px 72px}
+    .hero-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--mid);margin-bottom:18px}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7.5vw,108px);font-weight:300;line-height:.93;letter-spacing:-.01em;color:var(--ink)}
+    .hero-h1 em{font-style:italic;color:var(--accent)}
+    @media(max-width:640px){#hero{padding:100px 24px 60px;min-height:auto}}
+
+    /* BOOK 1 */
+    .book-section{padding:100px 52px;border-top:1px solid rgba(24,22,15,.1)}
+    .book-section:first-of-type{border-top:none;padding-top:80px}
+    .book-grid{display:grid;grid-template-columns:280px 1fr;gap:80px;align-items:start;max-width:1100px}
+    .book-cover{background:rgba(24,22,15,.04);border:1px solid rgba(24,22,15,.08);aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .book-cover-inner{text-align:center;padding:32px}
+    .book-cover-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--ink);line-height:1.2;margin-bottom:12px}
+    .book-cover-author{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mid)}
+    .book-cover-pub{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-top:16px}
+    .book-spine{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);opacity:.4}
+    .book-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:.8}
+    .book-h{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,52px);font-weight:300;line-height:1.05;color:var(--ink);margin-bottom:8px}
+    .book-h em{font-style:italic}
+    .book-subtitle{font-size:14px;color:var(--mid);margin-bottom:28px;font-style:italic}
+    .book-meta{display:flex;gap:32px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid rgba(24,22,15,.08)}
+    .book-meta-item{}
+    .book-meta-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:4px}
+    .book-meta-val{font-size:13px;color:var(--ink)}
+    .book-body{font-size:14px;line-height:2;color:var(--mid);margin-bottom:32px}
+    .book-body p+p{margin-top:16px}
+    .book-actions{display:flex;gap:16px;flex-wrap:wrap}
+    .book-btn{display:inline-block;padding:14px 28px;text-decoration:none;font-size:9px;letter-spacing:.22em;text-transform:uppercase;transition:background .3s,color .3s}
+    .book-btn-primary{background:var(--accent);color:var(--paper)}
+    .book-btn-primary:hover{background:var(--warm);color:var(--ink)}
+    .book-btn-secondary{border:1px solid rgba(24,22,15,.2);color:var(--ink)}
+    .book-btn-secondary:hover{background:var(--ink);color:var(--paper)}
+    .book-badge{display:inline-block;background:rgba(168,134,78,.1);border:1px solid rgba(168,134,78,.2);padding:6px 16px;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+    @media(max-width:800px){.book-grid{grid-template-columns:1fr;gap:40px}.book-cover{max-width:220px}}
+    @media(max-width:640px){.book-section{padding:64px 24px}.book-meta{flex-wrap:wrap;gap:16px}}
+
+    /* SECOND EDITION NOTE */
+    .second-ed-band{background:var(--ink);padding:52px;margin-top:2px;max-width:1100px}
+    .second-ed-kicker{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+    .second-ed-h{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--paper);margin-bottom:14px}
+    .second-ed-body{font-size:13px;line-height:1.9;color:rgba(239,233,223,.42);max-width:560px}
+
+    /* AUTHOR */
+    #author{padding:100px 52px;background:rgba(24,22,15,.03);border-top:1px solid rgba(24,22,15,.08)}
+    .author-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1100px;align-items:center}
+    .author-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:.8}
+    .author-h{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,52px);font-weight:300;line-height:1.05;color:var(--ink);margin-bottom:24px}
+    .author-body{font-size:14px;line-height:2;color:var(--mid)}
+    .author-body p+p{margin-top:16px}
+    .author-credentials{margin-top:32px;display:flex;flex-direction:column;gap:8px}
+    .credential{font-size:11px;letter-spacing:.1em;color:var(--accent);padding-left:16px;position:relative}
+    .credential::before{content:'';position:absolute;left:0;top:7px;width:6px;height:1px;background:var(--accent)}
+    @media(max-width:800px){.author-grid{grid-template-columns:1fr;gap:40px}}
+    @media(max-width:640px){#author{padding:64px 24px}}
+
+    /* CTA */
+    #cta{background:var(--ink);color:var(--paper);padding:120px 52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:80px}
+    .cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,72px);font-weight:300;line-height:.98}
+    .cta-h em{font-style:italic;color:var(--warm)}
+    .cta-btn{display:inline-block;padding:20px 44px;border:1px solid rgba(239,233,223,.25);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;transition:background .3s,border-color .3s}
+    .cta-btn:hover{background:var(--accent);border-color:var(--accent)}
+    @media(max-width:700px){#cta{grid-template-columns:1fr;gap:36px;padding:72px 24px}}
+
+    footer{background:var(--ink);color:var(--paper);padding:40px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(239,233,223,.06)}
+    footer span,footer a{font-size:10px;letter-spacing:.12em;color:rgba(239,233,223,.2);text-decoration:none;transition:color .3s}
+    footer a:hover{color:var(--accent)}
+    .footer-links{display:flex;gap:32px}
+    @media(max-width:640px){footer{flex-direction:column;gap:16px;padding:32px 24px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center;gap:16px}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Museum Planning LLC</a>
+  <ul class="nav-links">
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/services/">Services</a></li>
+      <li><a href="/mvi/">MVI</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/thinking/">Thinking</a></li>
+      <li><a href="/books/" class="active">Books</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+</nav>
+
+<section id="hero">
+  <div>
+    <p class="hero-kicker">Publications</p>
+    <h1 class="hero-h1">The standard<br>references for<br><em>museum planning.</em></h1>
+  </div>
+</section>
+
+<!-- MUSEUMS 101 -->
+<section class="book-section" id="museums-101">
+  <div class="book-grid">
+    <div>
+      <div class="book-cover">
+        <div class="book-spine"></div>
+        <div class="book-cover-inner">
+          <p class="book-cover-title">Museums 101</p>
+          <p class="book-cover-author">Mark Walhimer</p>
+          <p class="book-cover-pub">Bloomsbury</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="book-badge">Second Edition Forthcoming</span>
+      <p class="book-kicker">Museums 101</p>
+      <h2 class="book-h"><em>How to plan, design,</em><br>and operate a museum.</h2>
+      <p class="book-subtitle">The definitive guide for museum founders, directors, board members, and civic leaders.</p>
+      <div class="book-meta">
+        <div class="book-meta-item">
+          <p class="book-meta-label">Publisher</p>
+          <p class="book-meta-val">Bloomsbury Publishing</p>
+        </div>
+        <div class="book-meta-item">
+          <p class="book-meta-label">First Edition</p>
+          <p class="book-meta-val">2015</p>
+        </div>
+        <div class="book-meta-item">
+          <p class="book-meta-label">Used in</p>
+          <p class="book-meta-val">Museum studies programs worldwide</p>
+        </div>
+      </div>
+      <div class="book-body">
+        <p>Museums 101 leads readers through every phase of museum creation — from the initial feasibility question through strategic planning, master planning, exhibition design, operations, and governance. It is the only book that treats the museum as a complete system rather than a collection of disciplines.</p>
+        <p>The second edition, currently in development, will incorporate AI-driven planning tools, post-COVID operational models, digital engagement frameworks, and the Museum Vitality Index methodology developed over the past decade.</p>
+      </div>
+      <div class="book-actions">
+        <a href="https://museums101.com" target="_blank" class="book-btn book-btn-primary">Visit museums101.com →</a>
+        <a href="https://www.amazon.com/Museums-101-Mark-Walhimer/dp/1442263776" target="_blank" class="book-btn book-btn-secondary">Buy on Amazon</a>
+      </div>
+      <div class="second-ed-band">
+        <p class="second-ed-kicker">Second Edition — In Development</p>
+        <h3 class="second-ed-h">Museums 101, Second Edition</h3>
+        <p class="second-ed-body">The second edition updates the complete planning framework for the current era — AI-assisted planning, adaptive institutions, post-COVID operations, and the Convergence Era framework for museums as distributed interpretive systems. Contract with Bloomsbury Publishing. Publication date forthcoming.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESIGNING MUSEUM EXPERIENCES -->
+<section class="book-section" id="designing-museum-experiences">
+  <div class="book-grid">
+    <div>
+      <div class="book-cover">
+        <div class="book-spine"></div>
+        <div class="book-cover-inner">
+          <p class="book-cover-title">Designing Museum Experiences</p>
+          <p class="book-cover-author">Mark Walhimer</p>
+          <p class="book-cover-pub">Bloomsbury</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="book-kicker">Designing Museum Experiences</p>
+      <h2 class="book-h"><em>Visitor-centered design</em><br>for the modern museum.</h2>
+      <p class="book-subtitle">A how-to guide for creating inclusive, emotionally resonant museum experiences.</p>
+      <div class="book-meta">
+        <div class="book-meta-item">
+          <p class="book-meta-label">Publisher</p>
+          <p class="book-meta-val">Bloomsbury Publishing</p>
+        </div>
+        <div class="book-meta-item">
+          <p class="book-meta-label">Published</p>
+          <p class="book-meta-val">2021</p>
+        </div>
+        <div class="book-meta-item">
+          <p class="book-meta-label">Companion site</p>
+          <p class="book-meta-val">museum-experiences.com</p>
+        </div>
+      </div>
+      <div class="book-body">
+        <p>Designing Museum Experiences leads museum professionals through the tools and methodologies of visitor-centered design — empathy mapping, audience segmentation, visitor journey mapping, service design blueprints, and content strategy. The framework applies business-world user-centered design to the museum context.</p>
+        <p>The book addresses all three stages of the museum visit — pre-visit, in-person, and post-visit — with the goal of creating the conditions for repeat visitation and lasting institutional relationships.</p>
+      </div>
+      <div class="book-actions">
+        <a href="https://www.museum-experiences.com" target="_blank" class="book-btn book-btn-primary">Visit museum-experiences.com →</a>
+        <a href="https://www.amazon.com/Designing-Museum-Experiences-Mark-Walhimer/dp/1538130807" target="_blank" class="book-btn book-btn-secondary">Buy on Amazon</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="author">
+  <div class="author-grid">
+    <div>
+      <p class="author-kicker">About the Author</p>
+      <h2 class="author-h">Mark <em>Walhimer</em></h2>
+      <div class="author-body">
+        <p>Mark Walhimer is the managing partner of Museum Planning LLC, a museum consultancy founded in 1999. Over 25 years, the firm has completed 40+ projects across the United States, Latin America, Europe, and Asia — from community history museums to major national institutions.</p>
+        <p>Walhimer began his career in the studios of artists Judy Pfaff and Donald Lipski, and holds degrees from Skidmore College and Pratt Institute. His institutional work spans concept through opening day.</p>
+      </div>
+      <div class="author-credentials">
+        <span class="credential">Fulbright Specialist</span>
+        <span class="credential">Bloomsbury Publishing author</span>
+        <span class="credential">Former faculty, Georgia Institute of Technology</span>
+        <span class="credential">Former faculty, Tec de Monterrey, Mexico City</span>
+        <span class="credential">Design consultant, Smithsonian Institution</span>
+        <span class="credential">Project director, Children's Museum of Indianapolis</span>
+      </div>
+    </div>
+    <div>
+      <div style="background:rgba(24,22,15,.04);border:1px solid rgba(24,22,15,.08);padding:48px 40px">
+        <p style="font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:16px">Forthcoming</p>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--ink);margin-bottom:14px;line-height:1.1">Digital Museums</h3>
+        <p style="font-size:13px;line-height:1.9;color:var(--mid);margin-bottom:0">A third book is in early development — the public codification of the Convergence Era framework. <em>Digital Museums</em> will address the transformation of cultural institutions into distributed, AI-driven interpretive systems. Expected Phase 5 of the long-term practice development.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <h2 class="cta-h">Let's build<br>your <em>museum.</em></h2>
+  <a href="/contact/" class="cta-btn">Start a Conversation →</a>
+</section>
+
+<footer>
+  <span>© 2026 Museum Planning LLC</span>
+  <div class="footer-links">
+    <a href="/work/">Projects</a>
+    <a href="/services/">Services</a>
+    <a href="/mvi/">MVI</a>
+    <a href="/tools/">Tools</a>
+    <a href="/thinking/">Thinking</a>
+    <a href="/contact/">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Museum Planning LLC</title>
+  <meta name="description" content="Museum Planning LLC has spent thirty years designing institutions — concept through opening day. Founded by Mark Walhimer, Bloomsbury author and Fulbright Specialist, with 40+ projects across three continents.">
+  <link rel="canonical" href="https://museumplanning.com/about/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--ink:#18160f;--paper:#efe9df;--warm:#c8b99a;--mid:#9a9088;--accent:#a8864e}
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+    nav.scrolled{background:rgba(239,233,223,0.95);backdrop-filter:blur(12px);border-color:rgba(24,22,15,.07)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:40px;list-style:none}
+    .nav-links a{color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.4;transition:opacity .3s}
+    .nav-links a:hover{opacity:.9}
+    .nav-links a.active{opacity:1;color:var(--accent)}
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .nav-hamburger span{display:block;width:24px;height:1px;background:var(--ink);transition:transform .3s,opacity .3s}
+    .nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .nav-hamburger.open span:nth-child(2){opacity:0}
+    .nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile-menu{display:none;position:fixed;inset:0;background:rgba(239,233,223,.97);z-index:599;flex-direction:column;align-items:center;justify-content:center;gap:40px}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{color:var(--ink);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:.05em;transition:color .3s}
+    .mobile-menu a:hover{color:var(--accent)}
+    @media(max-width:640px){nav{padding:20px 24px}.nav-links{display:none}.nav-hamburger{display:flex}}
+
+    /* HERO */
+    #hero{min-height:65vh;display:flex;align-items:flex-end;background:var(--paper);padding:0 52px 80px}
+    .hero-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--mid);margin-bottom:18px}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7.5vw,108px);font-weight:300;line-height:.93;letter-spacing:-.01em;color:var(--ink)}
+    .hero-h1 em{font-style:italic;color:var(--accent)}
+    @media(max-width:640px){#hero{padding:100px 24px 60px;min-height:auto}}
+
+    /* STATEMENT */
+    #statement{background:var(--ink);padding:80px 52px}
+    .statement-inner{max-width:860px;margin:0 auto}
+    .statement-text{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,44px);font-weight:300;font-style:italic;line-height:1.25;color:var(--paper)}
+    .statement-text em{color:var(--warm);font-style:normal}
+    @media(max-width:640px){#statement{padding:60px 24px}}
+
+    /* METHODOLOGY */
+    #methodology{padding:100px 52px;background:var(--paper)}
+    .meth-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1100px;align-items:start}
+    .section-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:.8}
+    .section-h{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,52px);font-weight:300;line-height:1.05;color:var(--ink);margin-bottom:24px}
+    .section-h em{font-style:italic;color:var(--accent)}
+    .body-text{font-size:14px;line-height:2;color:var(--mid)}
+    .body-text p+p{margin-top:18px}
+    @media(max-width:800px){.meth-grid{grid-template-columns:1fr;gap:48px}}
+    @media(max-width:640px){#methodology{padding:72px 24px}}
+
+    /* TRACK RECORD */
+    #track{padding:0 52px 100px;background:var(--paper)}
+    .track-rule{border:none;border-top:1px solid rgba(24,22,15,.1);margin-bottom:64px}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:1100px;margin-bottom:64px}
+    .stat-box{background:rgba(24,22,15,.03);border:1px solid rgba(24,22,15,.07);padding:36px 28px}
+    .stat-val{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--accent);line-height:1;margin-bottom:8px}
+    .stat-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);line-height:1.5}
+    .project-list{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1100px}
+    .project-item{background:rgba(24,22,15,.03);border:1px solid rgba(24,22,15,.07);padding:28px 28px 32px}
+    .project-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:4px;line-height:1.2}
+    .project-location{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .project-type{font-size:12px;color:var(--mid)}
+    @media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}.project-list{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){#track{padding:0 24px 72px}.project-list{grid-template-columns:1fr}}
+
+    /* MARK */
+    #mark{background:var(--ink);padding:100px 52px}
+    .mark-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1100px;align-items:start}
+    .mark-kicker{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:.8}
+    .mark-name{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,5vw,80px);font-weight:300;line-height:.95;color:var(--paper);margin-bottom:8px}
+    .mark-title{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:rgba(239,233,223,.3);margin-bottom:32px}
+    .mark-body{font-size:14px;line-height:2;color:rgba(239,233,223,.45)}
+    .mark-body p+p{margin-top:18px}
+    .credentials{margin-top:40px;display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(239,233,223,.08)}
+    .credential{padding:14px 0;border-bottom:1px solid rgba(239,233,223,.06);font-size:12px;color:rgba(239,233,223,.35);display:flex;align-items:center;gap:14px}
+    .credential::before{content:'';width:4px;height:4px;background:var(--accent);border-radius:50%;flex-shrink:0}
+    .mark-since{font-family:'Cormorant Garamond',serif;font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(239,233,223,.15);margin-bottom:32px;display:block}
+    .mark-year{font-family:'Cormorant Garamond',serif;font-size:120px;font-weight:300;color:rgba(168,134,78,.08);line-height:1;margin-bottom:-20px;display:block}
+    @media(max-width:800px){.mark-grid{grid-template-columns:1fr;gap:48px}}
+    @media(max-width:640px){#mark{padding:72px 24px}}
+
+    /* VISION */
+    #vision{padding:100px 52px;background:var(--paper)}
+    .vision-inner{max-width:1100px}
+    .vision-h{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,52px);font-weight:300;line-height:1.05;color:var(--ink);margin-bottom:24px;max-width:700px}
+    .vision-h em{font-style:italic;color:var(--accent)}
+    .vision-body{font-size:14px;line-height:2;color:var(--mid);max-width:640px;margin-bottom:40px}
+    .vision-body p+p{margin-top:18px}
+    .vision-link{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid rgba(168,134,78,.3);padding-bottom:3px;transition:border-color .3s}
+    .vision-link:hover{border-color:var(--accent)}
+    @media(max-width:640px){#vision{padding:72px 24px}}
+
+    /* CTA */
+    #cta{background:var(--ink);color:var(--paper);padding:120px 52px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:80px}
+    .cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,72px);font-weight:300;line-height:.98}
+    .cta-h em{font-style:italic;color:var(--warm)}
+    .cta-btn{display:inline-block;padding:20px 44px;border:1px solid rgba(239,233,223,.25);color:var(--paper);text-decoration:none;font-size:9px;letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;transition:background .3s,border-color .3s}
+    .cta-btn:hover{background:var(--accent);border-color:var(--accent)}
+    @media(max-width:700px){#cta{grid-template-columns:1fr;gap:36px;padding:72px 24px}}
+
+    footer{background:var(--ink);color:var(--paper);padding:40px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(239,233,223,.06)}
+    footer span,footer a{font-size:10px;letter-spacing:.12em;color:rgba(239,233,223,.2);text-decoration:none;transition:color .3s}
+    footer a:hover{color:var(--accent)}
+    .footer-links{display:flex;gap:32px}
+    @media(max-width:640px){footer{flex-direction:column;gap:16px;padding:32px 24px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center;gap:16px}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Museum Planning LLC</a>
+  <ul class="nav-links">
+    <li><a href="/work/">Work</a></li>
+    <li><a href="/services/">Services</a></li>
+    <li><a href="/mvi/">MVI</a></li>
+    <li><a href="/tools/">Tools</a></li>
+    <li><a href="/thinking/">Thinking</a></li>
+    <li><a href="/books/">Books</a></li>
+    <li><a href="/about/" class="active">About</a></li>
+    <li><a href="/contact/">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/work/">Work</a>
+  <a href="/services/">Services</a>
+  <a href="/mvi/">MVI</a>
+  <a href="/tools/">Tools</a>
+  <a href="/thinking/">Thinking</a>
+  <a href="/books/">Books</a>
+  <a href="/about/" style="color:var(--accent)">About</a>
+  <a href="/contact/">Contact</a>
+</div>
+
+<section id="hero">
+  <div>
+    <p class="hero-kicker">About</p>
+    <h1 class="hero-h1">Museum<br>Planning <em>LLC.</em></h1>
+  </div>
+</section>
+
+<section id="statement">
+  <div class="statement-inner">
+    <p class="statement-text">Museum Planning LLC has spent thirty years designing institutions — <em>concept through opening day</em> — where communities encounter something they could not have built alone.</p>
+  </div>
+</section>
+
+<section id="methodology">
+  <div class="meth-grid">
+    <div>
+      <p class="section-kicker">The Methodology</p>
+      <h2 class="section-h">The museum is<br><em>the methodology.</em></h2>
+    </div>
+    <div class="body-text">
+      <p>Museum Planning LLC does not sell hours. The firm sells a methodology — thirty years of codified expertise in how museums get built, how they get funded, how they get used, and how they last.</p>
+      <p>Every engagement begins with the same question: what does this community need that it does not yet have? The answer shapes everything that follows — the feasibility study, the strategic plan, the master plan, the exhibition design. The process is the same whether the institution is a $300,000 community history museum in Georgia or a $25 million science center in Indonesia.</p>
+      <p>The methodology is documented in two books published by Bloomsbury, embodied in a suite of planning tools used by museum professionals worldwide, and tested across 40+ institutions on three continents.</p>
+    </div>
+  </div>
+</section>
+
+<section id="track">
+  <hr class="track-rule">
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-val">40+</div>
+      <div class="stat-label">Institutions — US, Latin America, Europe, Asia</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">1999</div>
+      <div class="stat-label">Founded — 25+ years of continuous practice</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">2</div>
+      <div class="stat-label">Bloomsbury books — Museums 101 + Designing Museum Experiences</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">3</div>
+      <div class="stat-label">Continents — concept through opening day</div>
+    </div>
+  </div>
+  <div class="project-list">
+    <div class="project-item">
+      <h3 class="project-name">Smithsonian Institution</h3>
+      <p class="project-location">Washington, D.C.</p>
+      <p class="project-type">Design Consultant</p>
+    </div>
+    <div class="project-item">
+      <h3 class="project-name">Children's Museum of Indianapolis</h3>
+      <p class="project-location">Indianapolis, Indiana</p>
+      <p class="project-type">Project Director</p>
+    </div>
+    <div class="project-item">
+      <h3 class="project-name">Museo Interactivo de Economía (MIDE)</h3>
+      <p class="project-location">Mexico City, Mexico</p>
+      <p class="project-type">Project Manager</p>
+    </div>
+    <div class="project-item">
+      <h3 class="project-name">Trans Studio Science Center</h3>
+      <p class="project-location">Bandung, Indonesia</p>
+      <p class="project-type">Master Planning + Exhibition Design</p>
+    </div>
+    <div class="project-item">
+      <h3 class="project-name">C.O. Polk Interactive Museum</h3>
+      <p class="project-location">McDonough, Georgia</p>
+      <p class="project-type">Turnkey Museum Services</p>
+    </div>
+    <div class="project-item">
+      <h3 class="project-name">Alcatraz: Life on the Rock</h3>
+      <p class="project-location">National Park Service</p>
+      <p class="project-type">Traveling Exhibition — Project Manager</p>
+    </div>
+  </div>
+</section>
+
+<section id="mark">
+  <div class="mark-grid">
+    <div>
+      <span class="mark-year">1999</span>
+      <p class="mark-kicker">Principal</p>
+      <h2 class="mark-name">Mark<br>Walhimer</h2>
+      <p class="mark-title">Managing Partner · Museum Planning LLC</p>
+      <div class="mark-body">
+        <p>Mark Walhimer is personally involved in every engagement. He is not a firm with associates and project managers. He is the methodology — the person who walks into the room with 30 years of pattern recognition across 40+ institutions and tells you what you need to know before you commit capital.</p>
+        <p>He began his career in the studios of artists Judy Pfaff and Donald Lipski, holds degrees from Skidmore College and Pratt Institute, and has served as Executive Director of the Museum of Arts and Sciences in Macon, Georgia.</p>
+      </div>
+      <div class="credentials">
+        <div class="credential">Fulbright Specialist</div>
+        <div class="credential">Author — <em>Museums 101</em> (Bloomsbury)</div>
+        <div class="credential">Author — <em>Designing Museum Experiences</em> (Bloomsbury)</div>
+        <div class="credential">Faculty — Georgia Institute of Technology</div>
+        <div class="credential">Faculty — Tec de Monterrey, Mexico City</div>
+        <div class="credential">Executive Director — Museum of Arts and Sciences, Macon GA</div>
+        <div class="credential">Design Consultant — Smithsonian Institution</div>
+      </div>
+    </div>
+    <div>
+      <p class="mark-kicker" style="color:rgba(239,233,223,.3)">Also</p>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--paper);margin-bottom:16px;line-height:1.1">Mark Walhimer — <em style="font-style:italic;color:var(--warm)">Artist</em></h3>
+      <p style="font-size:13px;line-height:1.9;color:rgba(239,233,223,.35);margin-bottom:24px">A generative art practice begun in 2022. Browser-based works built in p5.js, WebGL, and GLSL shaders. Five works submitted to Prix Ars Electronica 2026. Exhibited at MIRADAS TANGENTES, Madrid, 2026.</p>
+      <a href="https://mark-walhimer.com" target="_blank" style="font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(168,134,78,.3);padding-bottom:2px">mark-walhimer.com →</a>
+
+      <div style="margin-top:48px;padding-top:40px;border-top:1px solid rgba(239,233,223,.07)">
+        <p style="font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(239,233,223,.2);margin-bottom:16px">2028 Target</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:rgba(239,233,223,.4);line-height:1.2;margin-bottom:12px">Strategic acquisition opportunity</p>
+        <p style="font-size:12px;line-height:1.8;color:rgba(239,233,223,.2)">Museum Planning LLC is building toward a strategic acquisition by an architecture firm, fabrication firm, or design agency seeking immediate market leadership in the museum sector. Inquiries welcome.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vision">
+  <div class="vision-inner">
+    <p class="section-kicker">The Theoretical Foundation</p>
+    <h2 class="vision-h">Museums will no longer be defined as buildings — but as <em>distributed interpretive systems.</em></h2>
+    <div class="vision-body">
+      <p>In November 2025, Museum Planning LLC published the Convergence Era white paper — a framework for understanding the transformation now underway at the intersection of industrial design, artificial intelligence, spatial computing, and cultural institutions.</p>
+      <p>The museum is the proof of concept. Every planning tool, every MVI report, every strategic plan we deliver is built inside this framework. The institution you build in 2026 will still be operating in 2056. It needs to be ready for what comes next.</p>
+    </div>
+    <a href="/thinking/convergence-era/" class="vision-link">Read the Convergence Era white paper →</a>
+  </div>
+</section>
+
+<section id="cta">
+  <h2 class="cta-h">Let's build<br>your <em>museum.</em></h2>
+  <a href="/contact/" class="cta-btn">Start a Conversation →</a>
+</section>
+
+<footer>
+  <span>© 2026 Museum Planning LLC</span>
+  <div class="footer-links">
+    <a href="/work/">Work</a>
+    <a href="/services/">Services</a>
+    <a href="/mvi/">MVI</a>
+    <a href="/tools/">Tools</a>
+    <a href="/thinking/">Thinking</a>
+    <a href="/books/">Books</a>
+    <a href="/contact/">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+</script>
+</body>
+</html>
